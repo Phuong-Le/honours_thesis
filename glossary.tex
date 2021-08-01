@@ -112,53 +112,53 @@
 \newglossaryentry{classifier}
 {
         name=classifier,
-        description={blah}
+        description={a model that predict categorical data. In other words, the responses of the model are categorical, not numeric}
 }
 
-\newglossaryentry{density kernel}
+\newglossaryentry{kde}
 {
-        name=density kernel,
-        description={blah}
+        name=KDE,
+        description={(Kernel Density Estimation) \\ the use of a kernel function to estimate the density of a particular data point}
 }
 
-\newglossaryentry{kernel}
+\newglossaryentry{kernel function}
 {
-        name=kernel,
-        description={blah, kernel functions, used in SVM}
+        name=kernel function,
+        description={any function that belongs to a class of non-negative functions commonly used in density estimation and computation of ``similarity'' between 2 vectors}
 }
 
 \newglossaryentry{density}
 {
         name=density,
-        description={blah}
+        description={the density measures the likelihood of finding data $f(x)$ at a particular location $x$. The density throughout the domain of the data is restricted to be 1}
 }
 
 \newglossaryentry{intensity}
 {
         name=intensity,
-        description={blah}
+        description={the intensity of a data point is the product of its density and the sample size of the data. Accordingly, while ``inheriting'' some characteristics of the density, the intensity throughout the domain of the data is not restricted to be 1}
 }
 
 \newglossaryentry{knn}
 {
         name=KNN,
-        description={blah}
+        description={($k$-nearest neighbours) \\ a machine learning algorithm that predicts the labels of a data point based on the information from the closest data points to it. The number of closest data points $k$ is a hyper-parameter to be pre-defined. The choice of the distance measures used to identify the closest data points usually depend on the nature of the data}
 }
 
 \newglossaryentry{pval}
 {
         name=$p-value$,
-        description={blah}
+        description={the probability for an event to occur assuming the null hypothesis $H_o$ is true. The smaller the $p-value$, the more evidence we have to reject the null hypothesis}
 }
 
 \newglossaryentry{jackknife}
 {
         name=jackknife,
-        description={blah}
+        description={a statistical re-sampling technique which is generally used to estimate the variance in a particular statistic of a data sample. This technique re-computes the statistic of interest upon removing one data point from the given sample. The departure of the re-computed statistic from the original statistic indicates how extreme and influential the removed data point is. Repeating the procedure for every data point outputs a collection of re-computed statistics, which represents the estimated range for that statistic}
 }
 
 \newglossaryentry{bootstrap}
 {
         name=bootstrap,
-        description={blah}
+        description={a statistical re-sampling technique that reconstructs the original data set by randomly drawing data points from that original data set. The idea is that the reconstructed data set should inherit the properties of the original set, and the departure arises mainly from random noise. Similar to the jackknife, the bootstrap can be used to estimate data variance. However, in this project, the bootstrap was used for hypothesis testing}
 }
