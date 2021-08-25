@@ -1,6 +1,5 @@
 \setglossarypreamble{This list contains the most relevant versions of definitions to this research project}
 \makeglossaries
-
 \newglossaryentry{gle}
 {
         name=GLE,
@@ -33,14 +32,14 @@
 
 \newglossaryentry{glm}
 {
-        name=$GLM$,
+        name=GLM,
         description={(Generalised Linear Model) \\ A class of model that allows the errors (residuals) to follow a different distribution than the normal distribution. The ordinary linear model is one example of this class}
 }
 
 \newglossaryentry{pcawg}
 {
         name=PCAWG,
-        description={(Pan-cancer analysis of whole genome) \\ an international project that sequenced samples of different cancer types. Part of the project also identified somatic mutations and passenger mutations, which I used during my Honours}
+        description={(Pan-cancer analysis of whole genome) \\ an international project that sequenced samples of different cancer types. Part of the project also identified somatic mutations and passenger mutations.}
 }
 
 \newglossaryentry{icgc}
@@ -64,7 +63,13 @@
 \newglossaryentry{dhs}
 {
         name=DHS,
-        description={(DNase Hypersensitivity) \\ a measure of chromatin status - how accessible a genomic region is. This project used data from ENCODE For DHS}
+        description={(DNase Hypersensitivity) \\ a measure of chromatin status - how accessible a genomic region is. Applying the threshold to dnase accessibility helps identify open vs closed genomic regions. This project used data from ENCODE for DHS, where open and closed chromatin regions of the genome have been identified}
+}
+
+\newglossaryentry{chromatin}
+{
+        name=chromatin,
+        description={a complex of DNA with histone protein. A genomic region with a very dense complex is not easily accessible to factors like transcription and DNA repair. Such a region is called closed chromatin region, vice versa for open chromatin regions}
 }
 
 \newglossaryentry{null}
@@ -97,6 +102,13 @@
         description={a measure of accuracy for how well a classifier can exclude the possibility of other classes when identifying certain classes. The specificity for a class is the ratio between the number of observations correctly identified as that class and the total number of observations identified as that class}
 }
 
+\newglossaryentry{confusion matrix}
+{
+        name=confusion matrix,
+        plural=confusion matrices,
+        description={a way to report accuracy of a classifier. In this case the row labels are the true classes and the column labels are the predicted classes. The more data points on the diagonals, the higher the accuracy}
+}
+
 \newglossaryentry{ml}
 {
         name=ML,
@@ -124,7 +136,13 @@
 \newglossaryentry{kernel function}
 {
         name=kernel function,
-        description={any function that belongs to a class of non-negative functions commonly used in density estimation and computation of ``similarity'' between 2 vectors}
+        description={any function that belongs to a class of continuous and symmetric functions commonly used in density estimation and computation of ``similarity'' between 2 vectors. When applied on every pair of vectors to obtain a kernel matrix, this matrix is positive semi-definite.}
+}
+
+\newglossaryentry{positive semi-definite}
+{
+        name = positive definite,
+        description={a matrix $M$ is positive definite if for every element vector $z$, $zMz^\intercal > 0$. In other words, the eigenvalues of $M$ are positive. Additionally, $M$ is positive semi-definite if its eigenvalues are non-negative}
 }
 
 \newglossaryentry{density}
@@ -145,10 +163,16 @@
         description={($k$-nearest neighbours) \\ a machine learning algorithm that predicts the labels of a data point based on the information from the closest data points to it. The number of closest data points $k$ is a hyper-parameter to be pre-defined. The choice of the distance measures used to identify the closest data points usually depend on the nature of the data}
 }
 
+\newglossaryentry{svm}
+{
+        name=SVM,
+        description={(Support Vector Machines) \\ a machine learning algorithm that predicts the labels of a data point based on finding the boundaries between different classes based on the data points near the border of each class. Those data points are also called the support vectors}
+}
+
 \newglossaryentry{pval}
 {
-        name=$p-value$,
-        description={the probability for an event to occur assuming the null hypothesis $H_o$ is true. The smaller the $p-value$, the more evidence we have to reject the null hypothesis}
+        name=$p$-value,
+        description={the probability for an event to occur assuming the null hypothesis $H_o$ is true. The smaller the $p$, the more evidence we have to reject the null hypothesis}
 }
 
 \newglossaryentry{jackknife}
@@ -161,4 +185,17 @@
 {
         name=bootstrap,
         description={a statistical re-sampling technique that reconstructs the original data set by randomly drawing data points from that original data set. The idea is that the reconstructed data set should inherit the properties of the original set, and the departure arises mainly from random noise. Similar to the jackknife, the bootstrap can be used to estimate data variance. However, in this project, the bootstrap was used for hypothesis testing}
+}
+
+\newglossaryentry{kmer}
+{
+        name=$k$-mer,
+        description={a $k$ base long DNA sequence unit. For example, ACC and GAT are 3-mers while GCTAC is a 5-mer}
+}
+
+\newglossaryentry{re}
+{
+        name=$RE$,
+        description={Relative Entropy \\
+        a statistic that measures the amount of information available. Generally, information essentially implies variation. Here $RE$ is derived from a GLM.}
 }

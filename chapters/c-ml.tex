@@ -1,0 +1,9 @@
+\chapter{Classification}\label{ml}
+
+Chapter \ref{gle} demonstrates that the \gls{gle} contributes to characterising the cancer mutagenesis patterns. Chapter \ref{sce} shows evidence that there is an informational advantage in exploiting the bases outside 3-mers surrounding the changed bases. Nonetheless, to manipulate the information from \gls{gle} and \gls{sce}, they have to be represented correctly, (an analogy for this is that mL is probably a more appropriate measure for liquid volume than cm). A sensible instinct is that a more suitable representation of a feature gives higher accuracy than a less suitable representation. This chapter acts as both an application and a validation for chapters \ref{gle} and \ref{sce}. In particular, section \ref{ml-gle} shows that the smooth representation of \ref{gle} is a better representation than binning the genome. Section \ref{ml-sce} shows that \textcolor{blue}{blah blah}. Additionally, since \gls{gle} and \gls{sce} are separate sources of information, it is expected that a model that combines both features should improve accuracy over a model that uses only one of the two. Building such a combined model is complicated by the fact that the two features have different ``units''. Section \ref{ml-both} describes how this can be achieved.
+
+While each of the next sections works on a different data input, all sections follow the same procedure for training the classifier, details are in \textcolor{blue}{blah blah}. Briefly, a small proportion of data is set aside as a test set, which is then used to evaluate model performance.
+
+\section{Classifier based on GLE}\label{ml-gle}
+\section{Classifier based on SCE}\label{ml-sce}
+\section{Classifier based on the combination of GLE and SCE}\label{ml-both}

@@ -3,6 +3,9 @@
 \usepackage{graphicx}
 \graphicspath{{graphics/}}
 
+% language
+\usepackage[english]{babel}
+
 % color setting
 \usepackage[dvipsnames]{xcolor}
 \definecolor{halfgray}{gray}{0.55}
@@ -13,18 +16,21 @@
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
-    linkcolor=MidnightBlue,
+    linkcolor=BrickRed,
     citecolor=Periwinkle,      
     urlcolor=BlueViolet,
 }
+% footnote colour
+\renewcommand\thefootnote{\textcolor{RoyalPurple}{\arabic{footnote}}}
 
 % The following sets margins 
 \usepackage[a4paper,left=2cm, right=2cm,top=2cm,bottom=2cm,bindingoffset=1cm]{geometry}
 
+% Set line spacing between paragraphs and no indentation
+\usepackage[parfill]{parskip}
 % line space
 \usepackage{setspace}
 \linespread{1.3}
-
 % page layout
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -38,10 +44,19 @@
 % font
 \usepackage{times}
 
+
 % title spacing
 \usepackage{titlesec}
 
-\titleformat{\chapter}[display]{\huge}{\color{gray}\raggedleft{Chapter \thechapter}}{10pt}{\titlerule}
+% parts
+\titleclass{\part}{top}
+\titleformat{\part}[display]
+  {\huge\bfseries\centering}{\vspace{5cm}\color{CadetBlue}\partname~\thepart}{0pt}{}
+\titlespacing*{\part}{0pt}{40pt}{40pt}
+
+%chapters
+\titleformat{\chapter}[display]{\huge}{\color{CadetBlue}\raggedleft{Chapter \thechapter}}{10pt}{\titlerule}
+
 
 % abstract format
 \makeatletter
@@ -57,15 +72,30 @@
     {\if@twocolumn\else\endquotation\fi}
 \makeatother
 
+% table of content format
+\usepackage{tocloft}
+\renewcommand{\cftchapfont}{\bfseries}
+\renewcommand{\cftchappagefont}{\bfseries}
+\renewcommand{\cftchappresnum}{Chapter }
+\renewcommand{\cftchapaftersnum}{:}
+\renewcommand{\cftchapnumwidth}{2.5cm}
+
+
 % glossary
 % long-name-desc-loc style
 \usepackage[stylemods=longextra]{glossaries-extra}
 \setglossarystyle{long-name-desc-loc}
 \input{glossary}
 
-
 % reference
 \usepackage{natbib}
+
+
+
+% maths symbols 
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[cal=pxtx]{mathalfa}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,23 +108,44 @@
 \input{decorations/titlepage}
 \input{decorations/titleback}
 \input{decorations/prologue}
+\input{decorations/acknowledgements}
 
 \input{chapters/abstract}
 \newpage
 
-\tableofcontents
+{
+  \hypersetup{linkcolor=CadetBlue}
+  \tableofcontents
+}
 \newpage
-
+\label{glossary}
 \printglossary
 \newpage
 
 \pagenumbering{arabic}
 
-\input{chapters/c1-intro}
+\input{chapters/c-intro}
 \newpage
-random \citep{Abascal2020ExpandedGenomes}
+
+
+\part{Results: Exploring the features}{
+    The next two chapters report the results from conventional statistical tools to analyse the two features of interest, genomic location effect (\gls{gle}) and sequence context effect (\gls{sce}), respectively. In particular, this part dwells on \textbf{whether} GLE and SCE are significantly different between different cancer types, and explores \textbf{in what way} they are different. All analyses in this part were performed on the whole disease scale. For example, data for melanoma was all the mutations aggregated from all donors diagnosed with melanoma. This acts as a basis for building the \gls{classifier} in chapter \ref{ml}.
+}
+
+\input{chapters/c-gle}
+\input{chapters/c-sce}
+
+\part{Results: Building the classifier}{
+    Based on the finding presented in chapter \ref{gle} and \ref{sce}, the following chapter will present the classifier (\gls{classifier}) built on \gls{gle} and \gls{sce}. Briefly, this part trials different distance measures to estimate the dissimilarity between each pair of individual donors. Accordingly, this part also trials different ML algorithms that directly rely on pairwise distance/similarity measures like the \gls{knn} and the \gls{svm}. The accuracy of each approach, reported as \glspl{confusion matrix}, reveals interesting characteristics of cancer mutation data.  
+}
+
+\input{chapters/c-ml}
+
+\input{chapters/c-discussion}
+\input{chapters/c-methods}
 
 \bibliographystyle{geneticsstyle}
 \bibliography{references}
+\addcontentsline{toc}{chapter}{Bibliography}
 
 \end{document}
