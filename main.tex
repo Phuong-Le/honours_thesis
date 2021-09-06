@@ -24,10 +24,11 @@
 \renewcommand\thefootnote{\textcolor{RoyalPurple}{\arabic{footnote}}}
 
 % The following sets margins 
-\usepackage[a4paper,left=2cm, right=2cm,top=2cm,bottom=2cm,bindingoffset=1cm]{geometry}
+\usepackage[a4paper,left=2.5cm, right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 
 % Set line spacing between paragraphs and no indentation
 \usepackage[parfill]{parskip}
+\setlength{\parskip}{0.3cm} 
 % line space
 \usepackage{setspace}
 \linespread{1.3}
@@ -145,7 +146,7 @@
 \input{chapters/c-methods}
 
 \bibliographystyle{geneticsstyle}
-\bibliography{references}
+\bibliography{references,references_extended}
 \addcontentsline{toc}{chapter}{Bibliography}
 
 \end{document}
