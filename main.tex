@@ -106,12 +106,19 @@
 {}
 {\titlerule*[0.5pc]{.}\contentspage}% 
 
-
 % glossary
 % long-name-desc-loc style
 \usepackage[stylemods=longextra]{glossaries-extra}
 \setglossarystyle{long-name-desc-loc}
 \input{glossary}
+
+% These Commands create the label style for tables, figures and equations.
+\usepackage[labelfont={small,bf}, textfont=small]{caption}
+\captionsetup{labelformat=simple, labelsep=period}
+\newcommand\num{\addtocounter{equation}{1}\tag{\theequation}}
+\renewcommand{\theequation}{\arabic{equation}}
+
+
 
 % reference
 \usepackage{natbib}
