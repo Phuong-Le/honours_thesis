@@ -1,4 +1,4 @@
-\chapter{Methods}
+\chapter{Methods}\label{methods}
 
 \section{Data description}
 \subsection{PCAWG - Mutation data:} 
@@ -28,6 +28,7 @@ All core functions were tested under explicit hypothetical scenarios for correct
 \subsection{Parallelisation}
 When analysing large data sets, some steps could be considerably time-consuming, particularly the initial data filtering step and the simulation steps. Therefore, for several steps, I have written scripts that optimise code parallelisation based on the original command line. By doing this, for an analysis that executes the same processes multiple times on independent objects, these objects were ``distributed'' into different computer cores instead of being processed sequentially on one single computer. This was supported by the National Computational Infrastructure Australia.
 
+\input{figures/methods_workflow}
 
 \section{Genomic location effect}
 \section{Sequence context effect}

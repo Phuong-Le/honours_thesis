@@ -46,6 +46,12 @@
 % font
 \usepackage{times}
 
+% prevent hyphenating words
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
 
 % title spacing
 \usepackage[newparttoc]{titlesec}
@@ -115,10 +121,9 @@
 
 % These Commands create the label style for tables, figures and equations.
 \usepackage[labelfont={small,bf}, textfont=small]{caption}
-\captionsetup{labelformat=simple, labelsep=period}
+\captionsetup{labelformat=simple, labelsep=period, belowskip=-5pt}
 \newcommand\num{\addtocounter{equation}{1}\tag{\theequation}}
 \renewcommand{\theequation}{\arabic{equation}}
-
 
 
 % reference
