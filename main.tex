@@ -125,6 +125,9 @@
 \newcommand\num{\addtocounter{equation}{1}\tag{\theequation}}
 \renewcommand{\theequation}{\arabic{equation}}
 
+% allows text wrapping in tables
+\usepackage{tabulary}
+
 
 % reference
 \usepackage{natbib}
@@ -144,13 +147,13 @@
 \pagenumbering{roman}
 
 \begin{document}
-\input{decorations/titlepage}
-\input{decorations/titleback}
-\input{decorations/prologue}
-\input{decorations/acknowledgements}
+% \input{decorations/titlepage}
+% \input{decorations/titleback}
+% \input{decorations/prologue}
+% \input{decorations/acknowledgements}
 
-\input{chapters/abstract}
-\newpage
+% \input{chapters/abstract}
+% \newpage
 
 {
   \hypersetup{linkcolor=CadetBlue}
@@ -166,16 +169,16 @@
 \input{chapters/c-intro}
 \newpage
 
-\part{Results: Exploring the features}{
-    The next two chapters report the results from conventional statistical tools to analyse the two features of interest, genomic location effect (\gls{gle}) and sequence context effect (\gls{sce}), respectively. In particular, this part dwells on \textbf{whether} GLE and SCE are significantly different between different cancer types, and explores \textbf{in what way} they are different. All analyses in this part were performed on the whole disease scale. For example, data for melanoma was all the mutations aggregated from all donors diagnosed with melanoma. This acts as a basis for building the \gls{classifier} in chapter \ref{ml}.
-}
+% \part{Results: Exploring the features}{
+%     The next two chapters report the results from conventional statistical tools to analyse the two features of interest, genomic location effect (\gls{gle}) and sequence context effect (\gls{sce}), respectively. In particular, this part dwells on \textbf{whether} GLE and SCE are significantly different between different cancer types, and explores \textbf{in what way} they are different. All analyses in this part were performed on the whole disease scale. For example, data for melanoma was all the mutations aggregated from all donors diagnosed with melanoma. This acts as a basis for building the \gls{classifier} in chapter \ref{ml}.
+% }
 
 \input{chapters/c-gle}
 \input{chapters/c-sce}
 
-\part{Results: Building the classifier}{
-    Based on the finding presented in chapter \ref{gle} and \ref{sce}, the following chapter will present the classifier (\gls{classifier}) built on \gls{gle} and \gls{sce}. Briefly, this part trials different distance measures to estimate the dissimilarity between each pair of individual donors. Accordingly, this part also trials different ML algorithms that directly rely on pairwise distance/similarity measures like the \gls{knn} and the \gls{svm}. The accuracy of each approach, reported as \glspl{confusion matrix}, reveals interesting characteristics of cancer mutation data.  
-}
+% \part{Results: Building the classifier}{
+%     Based on the finding presented in chapter \ref{gle} and \ref{sce}, the following chapter will present the classifier (\gls{classifier}) built on \gls{gle} and \gls{sce}. Briefly, this part trials different distance measures to estimate the dissimilarity between each pair of individual donors. Accordingly, this part also trials different ML algorithms that directly rely on pairwise distance/similarity measures like the \gls{knn} and the \gls{svm}. The accuracy of each approach, reported as \glspl{confusion matrix}, reveals interesting characteristics of cancer mutation data.  
+% }
 
 \input{chapters/c-ml}
 
@@ -185,5 +188,7 @@
 \bibliographystyle{geneticsstyle}
 \bibliography{references,references_extended}
 \addcontentsline{toc}{chapter}{Bibliography}
+
+\input{chapters/c-appendices}
 
 \end{document}
