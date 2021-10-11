@@ -14,11 +14,13 @@ p = ggplot(data=violin_table,mapping = aes(Project_Code,log10(count))) +
   theme(
     panel.background = element_rect(fill = "#FFFFFF",
                                     size = 0.05, linetype = "solid"),
-    panel.grid.major = element_line(size = 0.05, linetype = 'solid',
+    panel.grid.major = element_line(size = 0.01, linetype = 'dotted',
                                     colour = "black"),
-    panel.grid.minor = element_line(size = 0.05, linetype = 'solid',
-                                    colour = "lightblue"),
-    axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size = 12)
+    panel.grid.minor = element_line(size = 0.01, linetype = 'solid',
+                                    colour = "white"),
+    axis.text.x = element_text(angle = 60, vjust = 1, hjust=1, size = 14),
+    axis.text.y = element_text(size = 12),
+    axis.title=element_text(size=14)
   ) #+
 #ggtitle('Mutation density - loop 1')
 p
