@@ -1,0 +1,30 @@
+\begin{table}[!htb]
+    \caption{Demo contingency tables}
+    \begin{subtable}[!h]{.5\textwidth}
+        \centering
+        \begin{tabular}{r|rr|r}
+             & Mutated & Non-mutated & Total  \\
+        \hline
+            Closed & $c_m$ & $c_n$ & $c$ \\
+            Open & $o_m$ & $o_n$ & $o$ \\
+        \hline    
+             & $m$ & $n$ & $t$ \\
+        \end{tabular}
+    \subcaption{Observed counts}
+    \label{tab:count_obs_demo}
+    \end{subtable} 
+    \quad % for side by side tables
+    \begin{subtable}[!h]{.5\textwidth}
+        \centering
+        \begin{tabular}{r|rr|r}
+             & Mutated & Non-mutated & Total  \\
+        \hline     
+            Closed & $c*m/t$ & $c*n/t$ & $c$ \\
+            Open & $o*m/t$ & $o*n/t$ & $o$ \\
+        \hline    
+             & $m$ & $n$ & $t$ \\
+        \end{tabular}
+    \subcaption{Expected counts}
+    \label{tab:count_exp_demo}
+    \end{subtable}    
+\end{table}

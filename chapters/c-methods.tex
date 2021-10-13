@@ -8,13 +8,13 @@ For this project, I am interested in two factors that help characterise the canc
 \subsection{PCAWG - Mutation data:} 
 The critical source of data for the project is the Pan-Cancer Analysis of Whole Genome (PCAWG) project \citep{Campbell2020}. This data consists of whole genome sequencing of both cancerous and healthy tissues (mostly blood) for all cancer patients. PCAWG relies on contrasting the cancerous against healthy tissues to determine whether a mutation is a \gls{sommut}. Identifying mutations by combining three established pipelines (Sanger \citep{Jones2016CgpCaVEManWrapper:Data}, EMBL/DKFZ \citep{Rimmer2014IntegratingApplications}, and Broad \citep{Cibulskis2013SensitiveSamples}), the project provides a valuable resource, which covers 2658 cancer samples from 28 cancer types, for studying cancer mutagenesis.
 
-This project is limited to somatic \glspl{point_mut}. I sampled 12 cancers whose DHS data for the putative original cells is also available (Table \ref{tab:encode}). A summary of the mutations for the 12 cancers can be found in the appendix Table \ref{tab:mutation_summary} and Figure \ref{fig:mutation_summary}. Mutation data for all individuals and all mutations was downloaded as a MAF file from the \href{https://dcc.icgc.org/releases/PCAWG/consensus_snv_indel}{International Cancer Genome Consortium (ICGC)}. Driver mutations were then filtered out based on \href{https://dcc.icgc.org/releases/PCAWG/driver_mutations}{the PCAWG's driver mutation project} because driver mutations are under selection pressure and have different mutation rates to passenger mutations. 
+This project is limited to somatic \glspl{point_mut}. I sampled 12 cancers whose DHS data for the putative original cells is also available (Table \ref{tab:encode}). A summary of the mutations for the 12 cancers can be found in the appendix Table \ref{tab:mutation_summary} and Figure \ref{fig:mutation_summary}. Mutation data for all individuals and all mutations was downloaded as a MAF file from the \href{https://dcc.icgc.org/releases/PCAWG/consensus_snv_indel}{International Cancer Genome Consortium (ICGC)}. Driver mutations were then filtered out based on \href{https://dcc.icgc.org/releases/PCAWG/driver_mutations}{the PCAWG's driver mutation project} because driver mutations are under selection pressure and have different mutation rates to passenger mutations. The information this project utilised from PCAWG was the mutations, their genomic locations, their donor ID and the donor's cancer. 
 
 \subsection{Reference genome:} 
-To reconstruct the entire cancer genome, both mutation data and a standard human reference genome are required. The human reference genome was provided by Ensembl \citep{Yates2020Ensembl2020}, and downloaded from the \href{http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes}{UCSC genome browser}. As PCAWG used Human Genome Assembly 37, the same version of genomic coordinates is used for this project. As an additional check, I also assert that the wildtype base at each mutated position and its local reference sequence context provided by PCAWG match the sequence at that position from the reference genome. 
+To reconstruct the cancer genome, both mutation data and a standard human reference genome are required. The human reference genome was provided by Ensembl \citep{Yates2020Ensembl2020}, and downloaded from the \href{http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes}{UCSC genome browser}. As PCAWG used Human Genome Assembly 37, the same version of genomic coordinates is used for this project. As an additional check, I also assert that the wildtype base at each mutated position and its local reference sequence context provided by PCAWG match the sequence at that position from the reference genome. 
 
 \subsection{Chromatin status data:} 
-Part of my project investigates the relationship between mutation distribution and chromatin status. Based on literature search, I identified the most likely tissue of origin for the cancer of interest, summarised in Table \ref{tab:encode}. DNase I hypersensitivity (DHS) data for these tissues of origin, as a canonical measure for chromatin status, was provided by ENCODE \citep[downloaded from either \href{https://genome.ucsc.edu/cgi-bin/hgFileUi?db=hg19&g=wgEncodeOpenChromDnase}{Duke} or \href{https://genome.ucsc.edu/cgi-bin/hgFileUi?db=hg19&g=wgEncodeUwDnase}{UW};][]{Thurman2012TheGenome,Klemm2019ChromatinEpigenome}. Open chromatin regions are defined as the hypersensitivity range from ENCODE, and closed chromatin regions are the rest of the genome. The relationship between the original cells based on DHS can be visualised in Figure \ref{fig:encode_pca} via the multiple dimension scaling technique (details in Subsection \ref{}). 
+Part of my project investigates the relationship between mutation distribution and chromatin status. Based on literature search, I identified the most likely tissue of origin for the cancer of interest, summarised in Table \ref{tab:encode}. DNase I hypersensitivity (DHS) data for these tissues of origin, as a canonical measure for chromatin status, was provided by ENCODE \citep[downloaded from either \href{https://genome.ucsc.edu/cgi-bin/hgFileUi?db=hg19&g=wgEncodeOpenChromDnase}{Duke} or \href{https://genome.ucsc.edu/cgi-bin/hgFileUi?db=hg19&g=wgEncodeUwDnase}{UW};][]{Thurman2012TheGenome,Klemm2019ChromatinEpigenome}. Specifically, ENCODE measured the level of Dnase hypersensitivity across the genome and identified Dnase hypersensitive regions based on an established threshold. Here, open chromatin regions are defined as the Dnase hypersensitive range and closed chromatin regions are the rest of the genome. The relationship between the original cells based on DHS can be visualised in Figure \ref{fig:encode_pca} via the multiple dimension scaling technique (details in Subsection \ref{methods:encode_pca}). 
 
 \section{Algorithm development}
 \subsection{Reproducibility} 
@@ -35,10 +35,49 @@ When analysing large data sets, some steps could be considerably time-consuming,
 
 \section{Whole disease analysis of GLE}
 
-The variation in chromatin structures of different cell types is believed to shape where mutations occur in the genome, giving rise to patterns of GLE that are distinctive of certain cancers. The methods in this section serve two purposes: to formally test the presumed biological connection between chromatin structure and mutation locations, and to weigh the importance of GLE as a characteristic of the mutation profile irrespective of the its driving mechanism.  
+The variation in chromatin structures of different cell types is believed to shape where mutations occur in the genome, giving rise certain patterns of GLE that are characteristic of cancers. The methods in this section serve two purposes: to formally test the presumed biological connection between chromatin structure and mutation locations, and to weigh the importance of GLE as a characteristic of the mutation profile irrespective of the its driving mechanism.  
 
-\subsection{PCA of chromatin structure}
-\subsection{Mutation location being influenced by chromatin status}
+\subsection{Visualising DHS by multi-dimensional scaling}\label{methods:encode_pca}
+Before establishing the relationship between mutation location and chromatin structure, I examined whether and how the relevant original cells are related in terms of chromatin structure using DHS data. The rationale is that if chromatin structure is a true determinant of mutation location, then tissues that are epigenetically similar should have roughly similar patterns of GLE. Accordingly, this might partly explain the pattern of mis-classification by GLE afterwards.
+
+For each pair of cell types, the intersections of their open chromatin regions were identified. The difference between the pair was then calculated as:
+
+\begin{equation}
+    d = 1 - \frac{2i}{o_1 + o_2}
+\end{equation}
+
+where $d$ is the difference/distance, $i$ is the total lengths of the genomic regions covered by the intersections, $o_1$ and $o_2$ are the length of the open chromatin regions. Essentially $d$ is the ``complement'' of the ratio between the intersection $i$ and the average length of the open regions $o_1$ and $o_2$. 
+
+Once the distances for all possible pairs of cell types were obtained, I decomposed these distances into their relative coordinates by multi-dimensional scaling. This was done by the R function \texttt{cmdscale}. I reported the coordinates for the three most informative dimensions. %in the appendix?
+
+\subsection{Mutation location in relation to chromatin status}
+To establish the relationship between the mutation location of a cancer and the chromatin status of its original cell type, I sorted mutations into open and closed chromatin regions as per Figure \ref{}. I then used 1. the G-test for whether we could reject the null that mutations occur without any preference for closed or open regions and 2. the odds ratio statistic to measure the bias towards closed regions.
+
+% \input{tables/methods_count_obs_demo}
+
+\subsubsection{Homogeneity test for mutation location between closed and open regions}
+I used the G-test of independence \citep{McDonald2014GtestStatistics} to examine the hypothesis whether the distribution of mutations are random across the genome - if this is the case, the expected number of mutations in the closed chromatin regions should not differ from that in the open regions. More formally:
+
+\begin{itemize}
+    \item $H_o (Null)$: Mutation abundance is independent of the chromatin status
+    \item $H_a (Alternate)$: Mutation abundance is biased by the chromatin status
+\end{itemize}
+
+First, the expected number of observations for each cell was calculated as per Table \ref{tab:count_exp_demo}
+. In particular, the total counts for each row and column are fixed as the original data. The G statistic, which represents departure of real data from expectation, is calculated as:
+\begin{equation}
+    G = 2 \underset{i}{\sum} o_{i} \ln \frac{o_{i}}{e_{i}}
+    \label{eq:g}
+\end{equation}
+where $o_{i}$ are observed values (\textit{i.e.} entries from Table \ref{tab:count_obs_demo}) and $e_{i}$ are expected values (\textit{i.e.} entries from Table \ref{tab:count_obs_demo}) and the p-value was obtained by permutation.
+
+\input{tables/methods_count_obs_demo}
+
+\subsubsection{Odds ratio}
+blah
+\subsubsection{Jackknife}
+\subsubsection{Switching cell types}
+
 \subsection{Hypothesis testing of GLE between cancer pairs by bootstrap}
 
 \section{Whole disease analysis of SCE}
