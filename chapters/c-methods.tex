@@ -51,9 +51,9 @@ where $d$ is the difference/distance, $i$ is the total lengths of the genomic re
 Once the distances for all possible pairs of cell types were obtained, I decomposed these distances into their relative coordinates by multi-dimensional scaling. This was done by the R function \texttt{cmdscale}. I reported the coordinates for the three most informative dimensions. %in the appendix?
 
 \subsection{Mutation location in relation to chromatin status}
-To establish the relationship between the mutation location of a cancer and the chromatin status of its original cell type, I sorted mutations into open and closed chromatin regions as per Figure \ref{}. I then used 1. the G-test for whether we could reject the null that mutations occur without any preference for closed or open regions and 2. the odds ratio statistic to measure the bias towards closed regions.
+To establish the relationship between the mutation location of a cancer and the chromatin status of its original cell type, I sorted mutations into open and closed chromatin regions as per Figure \ref{fig:gle_workflow}. I then used 1. the G-test for whether we could reject the null that mutations occur without any preference for closed or open regions and 2. the odds ratio statistic to measure the bias towards closed regions.
 
-% \input{tables/methods_count_obs_demo}
+\input{figures/methods_gle_workflow}
 
 \subsubsection{Homogeneity test for mutation location between closed and open regions}
 I used the G-test of independence \citep{McDonald2014GtestStatistics} to examine the hypothesis whether the distribution of mutations are random across the genome - if this is the case, the expected number of mutations in the closed chromatin regions should not differ from that in the open regions. More formally:
@@ -63,8 +63,7 @@ I used the G-test of independence \citep{McDonald2014GtestStatistics} to examine
     \item $H_a (Alternate)$: Mutation abundance is biased by the chromatin status
 \end{itemize}
 
-First, the expected number of observations for each cell was calculated as per Table \ref{tab:count_exp_demo}
-. In particular, the total counts for each row and column are fixed as the original data. The G statistic, which represents departure of real data from expectation, is calculated as:
+First, the expected number of observations for each cell was calculated as per Table \ref{tab:count_exp_demo}. For example, the expected number of mutated bases in the closed regions $e_i$ should be proportional to the number of bases available in the closed regions $c$ the number of mutations $m$. The departure of the observed count $o_i$ from the expected $e_i$ was measured by the $G$ statistic, calculated as:
 \begin{equation}
     G = 2 \underset{i}{\sum} o_{i} \ln \frac{o_{i}}{e_{i}}
     \label{eq:g}
@@ -74,8 +73,19 @@ where $o_{i}$ are observed values (\textit{i.e.} entries from Table \ref{tab:cou
 \input{tables/methods_count_obs_demo}
 
 \subsubsection{Odds ratio}
-blah
+To complement the G-test, I used the odds ratio \citep[$OR$;][]{Hoppe2017OddsRatios} as a measure of preference for mutations to occur in closed chromatin regions compared to open regions. The formula for $OR$ of the contingency Table \ref{tab:count_obs_demo} is as follows:
+
+\begin{equation}
+    OR = \frac{c_m/c_n}{o_m/o_n}
+    \label{eq:or}
+\end{equation}
+
+where $c_m$, $c_n$, $o_m$ and $o_n$ are all observed values that comes from Table \ref{tab:count_obs_demo}.
 \subsubsection{Jackknife}
+It is worth noting that even within one cancer type, different donors might vary in the number of mutations they carry and the locations of the mutations. If a donor has a very distinctive mutation pattern, then it is probable that the $OR$ statistic for their whole cancer cohort mostly represents that donor only. To address this, I performed a jackknife analysis on this measure for each disease \citep{Miller1974TheReview}. An illustration of the jackknife workflow is shown in figure \ref{fig:jackknife_demo}. Specifically, to see how influential a donor is on the $OR$, one simply removes that donor and observes how $OR$ changes. If one applies that to every donor, one obtains a new set of $OR$ that reflects the potential range of the true $OR$.
+
+
+
 \subsubsection{Switching cell types}
 
 \subsection{Hypothesis testing of GLE between cancer pairs by bootstrap}
