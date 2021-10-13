@@ -5,6 +5,8 @@ library(honours)
 
 distance_matrix=read.table('/Users/phuongle/Documents/repos/PhuongData/loop2_processed/encode/chromatin_summary/distances.tsv', header=T)
 headers = distance_matrix[,1]
+headers[which(headers=='KidneyREPTEC')]='KidneyRPTEC'
+headers[which(headers=='PancEpi')]='PancDuct'
 distance_matrix = distance_matrix[,-1]
 colnames(distance_matrix) = headers
 
@@ -23,6 +25,7 @@ p1 = ggplot(data = pca, mapping = aes(x=pca[,paste('PC',pc.x,sep='')],y=pca[,pas
   geom_point(colour = '#B5739D') +
   labs(x=paste('principal coordinate ',pc.x, ' (',round((variance_proportion(pca,dimensions)[pc.x]),2),'% explained)',sep=''),
        y=paste('principal coordinate ', pc.y, ' (',round((variance_proportion(pca,dimensions)[pc.y]),2),'% explained)',sep=''))
+p1
 
 pdf('/Users/phuongle/Documents/repos/honours_thesis/graphics/encode_pca_1_2.pdf',width=4.5,height=5)
 p1
