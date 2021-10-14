@@ -108,7 +108,7 @@ Following the attempt to investigate a suspected determinant of GLE, I examined 
 where $\hat{f}$ is the density for the location of interest $x$, $n$ is the total number of mutations, $X_i$'s are all genomic locations where mutations occur, $K$ is the kernel function - here the Gaussian kernel is used (appendix equation \ref{eq:gaussian}), $h$ is the bandwidth and determines the level of smoothing to be done - I used the canonical Scott's rule \citep[appendix equation \ref{eq:bandwidth};][]{Scott1992MultivariateEstimation} to determine the bandwidth. This is done using the python class \texttt{gaussian\_kde} from \texttt{scicy.stats}
 
 \subsubsection{Euclidean \textit{v.s.} Wasserstein distance measure}
-I separately used the Euclidean and Wasserstein distances for both representations to compare the GLE from two cancers. The basic difference between two is depicted in Figure \ref{}. Intuitively, Euclidean measures the distance between two densities in a point-wise manner and in the vertical direction while Wasserstein uses both the vertical and horizontal directions. 
+I separately used the Euclidean and Wasserstein distances for both representations to compare the GLE from two cancers. The basic difference between two is depicted in Figure \ref{fig:wasserstein_demo}. Intuitively, Euclidean measures the distance between two densities in a point-wise manner and in the vertical direction while Wasserstein uses both the vertical and horizontal directions. 
 
 \paragraph{Euclidean} The Euclidean distance, also known as the Pythagorean distance is the most widely used distance. It is strictly the root sum of squares of the difference between each point on one density and its counterpart on the other density \citep[equation \ref{eq:euclid};][]{ONeill2006FrameFields}.
 
@@ -119,7 +119,7 @@ I separately used the Euclidean and Wasserstein distances for both representatio
 
 where $d_E(a,b)$ is the distance between two densities $a$ and $b$; $a_i$ and $b_i$ are the elements of $a$ and $b$, respectively. This was executed by the python function \texttt{scipy.spatial.distance.euclidean}.
 
-\paragraph{Wasserstein} It is reasonable to view mutation densities as masses of data spatially distributed across a 1-D axis (Figure \ref{}). From this viewpoint, Wasserstein is a very appropriate measure of distance between two densities. Intuitively, it measures the minimal amount of work required to move mass from $A$ to $B$. Mathematically, it does so by searching for the minimum distance with respect to all the joint distributions $\gamma(x,y)$ of random variables $(X,Y)$ that have \glspl{marginal} $A$ and $B$\footnote{\textit{N.B.} There are infinite joint distributions}, as follows.
+\paragraph{Wasserstein} It is reasonable to view mutation densities as masses of data spatially distributed across a 1-D axis (Figure \ref{fig:wasserstein_demo}). From this viewpoint, Wasserstein is a very appropriate measure of distance between two densities. Intuitively, it measures the minimal amount of work required to move mass from $A$ to $B$. Mathematically, it does so by searching for the minimum distance with respect to all the joint distributions $\gamma(x,y)$ of random variables $(X,Y)$ that have \glspl{marginal} $A$ and $B$\footnote{\textit{N.B.} There are infinite joint distributions}, as follows.
 
 \begin{equation}
     d_W(A,B) = \underset{\gamma \in \mathcal{J}(A,B)}{\inf} \int |x-y| d \gamma(x,y) 
@@ -128,8 +128,19 @@ where $d_E(a,b)$ is the distance between two densities $a$ and $b$; $a_i$ and $b
 
 where $d_W$ is the Wasserstein distance; $\mathcal{J}$ is set of all joint distributions $\gamma$. The $\gamma(x,y)$ terms represent the transport plans to move data from $A$ to $B$ and the $|x-y|$ term represents the distance to move from $A$ to $B$ based on that transport plan. The smallest value that takes into account the 2 terms (selected by the infimum function $\inf$) is the final Wasserstein distance. The assumption the Wasserstein distance imposes that $A$ and $B$ have the same masses is satisfied because by definition, the area under the curve for densities is always 1. This was done using the python function \texttt{scipy.stats.wasserstein\_distance}.
 
+\input{figures/methods_wasserstein}
 
 \subsubsection{The bootstrap}
+
+Having established the representations and distance measures, the next questions are whether the distance is significantly large enough to conclude that the cancer types have different patterns of GLE, and which representation can extract the most information for doing so. For this, I used the bootstrap method \citep{Singh2010BootstrapMethod}, which is based on random re-sampling. For a pair of cancers A and B, the formal hypotheses are
+
+\begin{itemize}
+    \item $H_o (Null)$ GLE for A is the same as B
+    \item $H_a (Alternate)$ GLE for A is different from B
+\end{itemize}
+
+The bootstrap procedure is illustrated in Figure \ref{}. For a pair of cancer types A and B with distance $d$, I first aggregated all mutations from the two cancers to create a pool of mutations. I then simulated 2 imaginary cancers 1 and 2 by randomly drawing mutations from that previously constructed mutation pool. The constraint on the simulation is that the total number of mutations in 1 has to be the same as either A or B - likewise for 2. I then measured the simulated distance $d_i$ between 1 and 2. This process was repeated $n$ = 1000 times. To conclude that A and B are significantly different from each other, $d_{obs}$ should be larger than most of the simulated $d_i$. In the end, the proportion of the simulated distances that are greater than the observed distance between A and B is the estimated p-value the hypothesis test. 
+
 
 \section{Whole disease analysis of SCE}
 \section{Mutation-based classifier for cancers}
