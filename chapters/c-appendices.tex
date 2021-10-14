@@ -24,3 +24,26 @@
 \vspace{1cm}
 \input{tables/apdx_encode_pca}
 
+\newpage
+\section{Supplementary equations for smoothing GLE}
+\subsection{Gaussian kernel density estimation}
+
+Kernel functions estimate the density of data at a particular location by measuring the distance from that location to all observed data points. To estimate mutation density across the genome, I used the Gaussian kernel, as follows:
+
+\begin{equation}
+    K(u) = \frac{1}{2\pi} e^{\frac{-u^2}{2}}
+    \label{eq:gaussian}
+\end{equation}
+
+where $K$ is the kernel function, $u$ is a variable - \textit{i.e.} $\frac{x-X{i}}{h}$ in equation \ref{eq:density}
+
+\subsection{Bandwidth choice}
+The bandwidth $h$ determines the level of smoothing, or the distance at which the an observed mutation can meaningfully influence the density $\hat{f}$ at location $x$, I used the Scott's method, as follows:
+
+\begin{equation}
+    h = 1.059 A n^{-1/5}
+    \label{eq:bandwidth}
+\end{equation}
+
+where $h$ is the bandwidth, $A$ is a measure of spread of the observed mutation locations (\textit{i.e.} the smaller of (1) the standard deviation and the (2) inter-quartile range) and $n$ is the total number of mutations.
+
