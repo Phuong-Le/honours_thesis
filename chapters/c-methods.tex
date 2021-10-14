@@ -48,7 +48,7 @@ For each pair of cell types, the intersections of their open chromatin regions w
 
 where $d$ is the difference/distance, $i$ is the total lengths of the genomic regions covered by the intersections, $o_1$ and $o_2$ are the length of the open chromatin regions. Essentially $d$ is the ``complement'' of the ratio between the intersection $i$ and the average length of the open regions $o_1$ and $o_2$. 
 
-Once the distances for all possible pairs of cell types were obtained, I decomposed these distances into their relative coordinates by multi-dimensional scaling. This was done by the R function \texttt{cmdscale}. I reported the coordinates for the three most informative dimensions. %in the appendix?
+Once the distances for all possible pairs of cell types were obtained, I decomposed these distances into their relative coordinates by multi-dimensional scaling. This was done by the R function \texttt{cmdscale}. I reported the coordinates for the 3 most informative dimensions. %in the appendix?
 
 \subsection{Mutation location in relation to chromatin status}
 To establish the relationship between the mutation location of a cancer and the chromatin status of its original cell type, I sorted mutations into open and closed chromatin regions as per Figure \ref{fig:gle_workflow}. I then used 1. the G-test for whether we could reject the null that mutations occur without any preference for closed or open regions and 2. the odds ratio statistic to measure the bias towards closed regions.
@@ -72,7 +72,7 @@ where $o_{i}$ are observed values (\textit{i.e.} entries from Table \ref{tab:cou
 
 \input{tables/methods_count_obs_demo}
 
-\subsubsection{Odds ratio}
+\subsubsection{Odds ratio for the bias in GLE}
 To complement the G-test, I used the odds ratio \citep[$OR$;][]{Hoppe2017OddsRatios} as a measure of preference for mutations to occur in closed chromatin regions compared to open regions. The formula for $OR$ of the contingency Table \ref{tab:count_obs_demo} is as follows:
 
 \begin{equation}
@@ -81,14 +81,55 @@ To complement the G-test, I used the odds ratio \citep[$OR$;][]{Hoppe2017OddsRat
 \end{equation}
 
 where $c_m$, $c_n$, $o_m$ and $o_n$ are all observed values that comes from Table \ref{tab:count_obs_demo}.
-\subsubsection{Jackknife}
+
+\subsubsection{Jackknife for the variation of $OR3$}
 It is worth noting that even within one cancer type, different donors might vary in the number of mutations they carry and the locations of the mutations. If a donor has a very distinctive mutation pattern, then it is probable that the $OR$ statistic for their whole cancer cohort mostly represents that donor only. To address this, I performed a jackknife analysis on this measure for each disease \citep{Miller1974TheReview}. An illustration of the jackknife workflow is shown in figure \ref{fig:jackknife_demo}. Specifically, to see how influential a donor is on the $OR$, one simply removes that donor and observes how $OR$ changes. If one applies that to every donor, one obtains a new set of $OR$ that reflects the potential range of the true $OR$.
 
+\input{figures/methods_jackknife}
 
-
-\subsubsection{Switching cell types}
+\subsubsection{Shuffling DHS data}
+It is a very natural concern that the calculation of $OR$ is itself biased towards closed chromatin regions due to its sheer large size compared to open regions. Besides, if chromatin status is a determinant of mutation location, then cells that have similar DHS should have somewhat similar GLE patterns. To address both of these, I shuffled the DHS data for the examined cancers. This means that, I sampled the PCAWG mutation data for each cancer. I then calculated the shuffled $OR$ - instead of sorting mutations by its own DHS data, I sorted mutations by the DHS data for all other cancers' original cells. Eventually, for each cancer, 11 shuffled $OR$'s were obtained. 
 
 \subsection{Hypothesis testing of GLE between cancer pairs by bootstrap}
+
+Following the attempt to investigate a suspected determinant of GLE, I examined whether GLE could discriminate cancers and what approaches to represent GLE could yield the most resolution. This includes the bin \textit{v.s.} smoothing representation and the Wasserstein \textit{v.s.} Euclidean distance measures. 
+
+% add something about smooth vs bin and euclidean vs wasserstein
+
+\subsubsection{Bin \textit{v.s.} smoothing representation}
+\paragraph{Bin} As briefly described in Figure \ref{fig:mutdistribution_demo}, the bin representation segmented the genome into non-overlapping bins of 1 million base in length. The number of mutations in each bin was recorded for each chromosome, then divided by the total mutations in that chromosome to get the bin density. 
+\paragraph{Smoothing} To address the issue with arbitrary boundaries introduced by the discrete bins approach, I proposed the smoothing representation that computes a sliding window of mutation density across each chromosome (Figure \ref{fig:mutdistribution_demo}). This was done using a kernel function \citep[equation \ref{eq:density};][]{Silverman1986DensityAnalysis}. The idea is that the density at a certain location $x$ should be proportional to the distance from $x$ to all other locations $X_i$ where mutations are observed. 
+
+\begin{equation}
+    \hat{f} = \frac{1}{nh} \underset{i=1}{\overset{n}{\sum}} K(\frac{x- X_i}{h})
+    \label{eq:density}
+\end{equation}
+
+where $\hat{f}$ is the density for the location of interest $x$, $n$ is the total number of mutations, $X_i$'s are all genomic locations where mutations occur, $K$ is the kernel function - here the Gaussian kernel is used (appendix equation \ref{eq:gaussian}), $h$ is the bandwidth and determines the level of smoothing to be done - I used the canonical Scott's rule \citep[appendix equation \ref{eq:bandwidth};][]{Scott1992MultivariateEstimation} to determine the bandwidth. This is done using the python class \texttt{gaussian\_kde} from \texttt{scicy.stats}
+
+\subsubsection{Euclidean \textit{v.s.} Wasserstein distance measure}
+I separately used the Euclidean and Wasserstein distances for both representations to compare the GLE from two cancers. The basic difference between two is depicted in Figure \ref{}. Intuitively, Euclidean measures the distance between two densities in a point-wise manner and in the vertical direction while Wasserstein uses both the vertical and horizontal directions. 
+
+\paragraph{Euclidean} The Euclidean distance, also known as the Pythagorean distance is the most widely used distance. It is strictly the root sum of squares of the difference between each point on one density and its counterpart on the other density \citep[equation \ref{eq:euclid};][]{ONeill2006FrameFields}.
+
+\begin{equation}
+    d_E(a,b) = \sqrt{\sum_{i=1}^n (a_i - b_i)}
+    \label{eq:euclid}
+\end{equation}
+
+where $d_E(a,b)$ is the distance between two densities $a$ and $b$; $a_i$ and $b_i$ are the elements of $a$ and $b$, respectively. This was executed by the python function \texttt{scipy.spatial.distance.euclidean}.
+
+\paragraph{Wasserstein} It is reasonable to view mutation densities as masses of data spatially distributed across a 1-D axis (Figure \ref{}). From this viewpoint, Wasserstein is a very appropriate measure of distance between two densities. Intuitively, it measures the minimal amount of work required to move mass from $A$ to $B$. Mathematically, it does so by searching for the minimum distance with respect to all the joint distributions $\gamma(x,y)$ of random variables $(X,Y)$ that have \glspl{marginal} $A$ and $B$\footnote{\textit{N.B.} There are infinite joint distributions}, as follows.
+
+\begin{equation}
+    d_W(A,B) = \underset{\gamma \in \mathcal{J}(A,B)}{\inf} \int |x-y| d \gamma(x,y) 
+    \label{eq:wassertein}
+\end{equation}
+
+where $d_W$ is the Wasserstein distance; $\mathcal{J}$ is set of all joint distributions $\gamma$. The $\gamma(x,y)$ terms represent the transport plans to move data from $A$ to $B$ and the $|x-y|$ term represents the distance to move from $A$ to $B$ based on that transport plan. The smallest value that takes into account the 2 terms (selected by the infimum function $\inf$) is the final Wasserstein distance. The assumption the Wasserstein distance imposes that $A$ and $B$ have the same masses is satisfied because by definition, the area under the curve for densities is always 1. This was done using the python function \texttt{scipy.stats.wasserstein\_distance}.
+
+
+\subsubsection{The bootstrap}
 
 \section{Whole disease analysis of SCE}
 \section{Mutation-based classifier for cancers}
