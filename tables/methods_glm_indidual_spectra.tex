@@ -1,0 +1,24 @@
+\begin{figure}[h!]
+  \begin{minipage}[c]{0.4\textwidth}
+    \captionof{table}{\textbf{Contingency table to examine the composition of base substitutions in Cancer A}. Cancer A is compared to a null cancer where all counts are the same. The resulting $RE$'s represent the degree of abnormality in the excess/deficit of certain mutations. This particular table computes the $RE$ set for substitutions whole wildtype is T. For each cancer, three similar tables are required for substitutions of A, C and G.} 
+    \label{tab:glm_spectra}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.59\textwidth}
+    \begin{tabulary}{\columnwidth}{lCCCR}
+    \toprule
+        & \textbf{T$\rightarrow$A} & \textbf{T$\rightarrow$C} & \textbf{T$\rightarrow$G}  & \textbf{total} \\
+    \hline
+        \textbf{Cancer A} & $count_{T>A}$ & $count_{T>C}$ & $count_{T>G}$ & $count_{tot}$ \\
+        \textbf{Null} & $count_{tot}/3$ & $count_{tot}/3$ & $count_{tot}/3$ & $count_{tot}$ \\
+    \bottomrule
+    \end{tabulary}
+    \vspace{1cm}
+    \begin{equation}
+        \begin{aligned}
+            H_o: \ln{count} =& \lambda_{cancer} + \lambda_{sub}  & \\
+            H_a: \ln{count} =& \lambda_{cancer} + \lambda_{sub} + \lambda_{cancer:sub}
+        \end{aligned}
+        \label{eq:spectra}
+    \end{equation}
+  \end{minipage}
+\end{figure}
