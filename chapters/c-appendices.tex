@@ -25,7 +25,7 @@
 \input{tables/apdx_encode_pca}
 
 \newpage
-\section{Supplementary equations for smoothing GLE}
+\section{Supplementary computations for smoothing GLE}
 \subsection{Gaussian kernel density estimation}
 
 Kernel functions estimate the density of data at a particular location by measuring the distance from that location to all observed data points. To estimate mutation density across the genome, I used the Gaussian kernel, as follows:
@@ -47,3 +47,22 @@ The bandwidth $h$ determines the level of smoothing, or the distance at which th
 
 where $h$ is the bandwidth, $A$ is a measure of spread of the observed mutation locations (\textit{i.e.} the smaller of (1) the standard deviation and the (2) inter-quartile range) and $n$ is the total number of mutations.
 
+
+\newpage
+\section{Supplementary computations for SCE}
+
+\subsection{Deviance residuals for GLM of contingency table}
+\begin{equation}
+    r_i = sign(y_i - \hat{\mu}_i) \times \sqrt{2y_i\ln{\frac{y_i}{\hat{\mu}_i}} - (y_i - \hat{\mu}_i)}
+    \label{eq:dev_res}
+\end{equation}
+where $r_i$ is the deviance residual for entry $i$, $y_i$ is the actual observed count of that entry, $\hat{\mu}_i$ is the estimated expected count for that entry under the saturated model. The $sign$ function determines the sign of the residual $r_i$, \textit{i.e.} whether it is positive ($>$0) or negative ($<$0). In particular, $r_i>0$ if the observed is greater than the expected and vice versa. 
+
+\subsection{Fisher's method}\label{apdx:fisher}
+To aggregate $k$ p-values, we could calculate the Fisher statistic $X$
+
+\begin{equation}
+    X = 2 \sum_{i=1}^k \ln{p_i}
+    \label{eq:fisher}
+\end{equation}
+where $X$ is the Fisher statistic, $p_i$ is the member p-value. If converted from the log scale as seen in equation \ref{eq:fisher} to the normal scale, we could see that this is essentially the square of the product of the p-values. $X$ follows the $\chi^2_{2k}$ distribution, so we can easily obtain an aggregated p-value by contrasting $X$ against $\chi^2_{2k}$.

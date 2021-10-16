@@ -1,6 +1,6 @@
 \chapter{Methods}\label{methods}
 
-For this project, I am interested in two factors that help characterise the cancer mutation profile: genomic location effect (GLE) and sequence context effect (SCE; Figure \ref{fig:workflow}). I investigated each factor on two complementary scales: statistical analysis of whole disease and cancer classification for individuals. The former somewhat plays the role of a biological basis for the latter, whereas the latter could validate the patterns detected by the former.
+For this project, I am interested in two factors that help characterise the cancer mutation profile: genomic location effect (GLE) and sequence context effect (SCE; Figure \ref{fig:workflow}). I examined each factor on two complementary scales: analysis of whole disease (section \ref{methods:gle} and \ref{methods:sce}) and cancer classification for individuals (section \ref{methods:ml}). The former somewhat plays the role of a biological basis for the latter, whereas the latter could validate the patterns detected by the former.
 
 \input{figures/methods_workflow}
 
@@ -33,9 +33,9 @@ All core functions were tested under explicit hypothetical scenarios for correct
 When analysing large data sets, some steps could be considerably time-consuming, particularly the initial data filtering step and the simulation steps. Therefore, for several steps, I have written scripts that optimise code parallelisation based on the original command line. By doing this, for an analysis that executes the same processes multiple times on independent objects, these objects were ``distributed'' into different computer cores instead of being processed sequentially on one single computer. This was supported by the National Computational Infrastructure Australia.
 
 
-\section{Whole disease analysis of GLE}
+\section{Whole disease analysis of GLE}\label{methods:gle}
 
-The variation in chromatin structures of different cell types is believed to shape where mutations occur in the genome, giving rise certain patterns of GLE that are characteristic of cancers. The methods in this section serve two purposes: to formally test the presumed biological connection between chromatin structure and mutation locations, and to weigh the importance of GLE as a characteristic of the mutation profile irrespective of the its driving mechanism.  
+The variation in chromatin structures of different cell types is believed to shape where mutations occur in the genome, giving rise to certain patterns of genomic location (\gls{gle}) that are characteristic of cancers. The methods in this section serve two purposes: to formally test the presumed biological connection between chromatin structure and mutation locations, and to weigh the importance of GLE as a characteristic of the mutation profile irrespective of the its driving mechanism.  
 
 \subsection{Visualising DHS by multi-dimensional scaling}\label{methods:encode_pca}
 Before establishing the relationship between mutation location and chromatin structure, I examined whether and how the relevant original cells are related in terms of chromatin structure using DHS data. The rationale is that if chromatin structure is a true determinant of mutation location, then tissues that are epigenetically similar should have roughly similar patterns of GLE. Accordingly, this might partly explain the pattern of mis-classification by GLE afterwards.
@@ -82,7 +82,7 @@ To complement the G-test, I used the odds ratio \citep[$OR$;][]{Hoppe2017OddsRat
 
 where $c_m$, $c_n$, $o_m$ and $o_n$ are all observed values that comes from Table \ref{tab:count_obs_demo}.
 
-\subsubsection{Jackknife for the variation of $OR3$}
+\subsubsection{Jackknife for the variation of $OR$}
 It is worth noting that even within one cancer type, different donors might vary in the number of mutations they carry and the locations of the mutations. If a donor has a very distinctive mutation pattern, then it is probable that the $OR$ statistic for their whole cancer cohort mostly represents that donor only. To address this, I performed a jackknife analysis on this measure for each disease \citep{Miller1974TheReview}. An illustration of the jackknife workflow is shown in figure \ref{fig:jackknife_demo}. Specifically, to see how influential a donor is on the $OR$, one simply removes that donor and observes how $OR$ changes. If one applies that to every donor, one obtains a new set of $OR$ that reflects the potential range of the true $OR$.
 
 \input{figures/methods_jackknife}
@@ -119,14 +119,14 @@ I separately used the Euclidean and Wasserstein distances for both representatio
 
 where $d_E(a,b)$ is the distance between two densities $a$ and $b$; $a_i$ and $b_i$ are the elements of $a$ and $b$, respectively. This was executed by the python function \texttt{scipy.spatial.distance.euclidean}.
 
-\paragraph{Wasserstein} It is reasonable to view mutation densities as masses of data spatially distributed across a 1-D axis (Figure \ref{fig:wasserstein_demo}). From this viewpoint, Wasserstein is a very appropriate measure of distance between two densities. Intuitively, it measures the minimal amount of work required to move mass from $A$ to $B$. Mathematically, it does so by searching for the minimum distance with respect to all the joint distributions $\gamma(x,y)$ of random variables $(X,Y)$ that have \glspl{marginal} $A$ and $B$\footnote{\textit{N.B.} There are infinite joint distributions}, as follows.
+\paragraph{Wasserstein} It is reasonable to view mutation densities as masses of data spatially distributed across a 1-D axis (Figure \ref{fig:wasserstein_demo}). From this viewpoint, Wasserstein is a very appropriate measure of distance between two densities. Intuitively, it measures the minimal amount of work required to move mass from $A$ to $B$. Mathematically, it does so by searching for the minimum distance with respect to all the joint distributions $\gamma(x,y)$ of random variables $(X,Y)$ that have \glspl{marginal} $A$ and $B$\footnote{\textit{N.B.} There are infinite joint distributions $\gamma$}, as follows.
 
 \begin{equation}
     d_W(A,B) = \underset{\gamma \in \mathcal{J}(A,B)}{\inf} \int |x-y| d \gamma(x,y) 
     \label{eq:wassertein}
 \end{equation}
 
-where $d_W$ is the Wasserstein distance; $\mathcal{J}$ is set of all joint distributions $\gamma$. The $\gamma(x,y)$ terms represent the transport plans to move data from $A$ to $B$ and the $|x-y|$ term represents the distance to move from $A$ to $B$ based on that transport plan. The smallest value that takes into account the 2 terms (selected by the infimum function $\inf$) is the final Wasserstein distance. The assumption the Wasserstein distance imposes that $A$ and $B$ have the same masses is satisfied because by definition, the area under the curve for densities is always 1. This was done using the python function \texttt{scipy.stats.wasserstein\_distance}.
+where $d_W$ is the Wasserstein distance; $\mathcal{J}$ is the set of all joint distributions $\gamma$. The $\gamma(x,y)$ terms represent the transport plans to move data from $A$ to $B$ and the $|x-y|$ term represents the distance to move from $A$ to $B$ based on that transport plan. The smallest value that takes into account the two terms (selected by the infimum function $\inf$) is the final Wasserstein distance. The assumption the Wasserstein distance imposes that $A$ and $B$ have the same masses was satisfied because by definition, the area under the curve for densities is always 1. This was done using the python function \texttt{scipy.stats.wasserstein\_distance}.
 
 \input{figures/methods_wasserstein}
 
@@ -139,11 +139,55 @@ Having established the representations and distance measures, the next questions
     \item $H_a (Alternate)$ GLE for A is different from B
 \end{itemize}
 
-The bootstrap procedure is illustrated in Figure \ref{}. For a pair of cancer types A and B with distance $d$, I first aggregated all mutations from the two cancers to create a pool of mutations. I then simulated 2 imaginary cancers 1 and 2 by randomly drawing mutations from that previously constructed mutation pool. The constraint on the simulation is that the total number of mutations in 1 has to be the same as either A or B - likewise for 2. I then measured the simulated distance $d_i$ between 1 and 2. This process was repeated $n$ = 1000 times. To conclude that A and B are significantly different from each other, $d_{obs}$ should be larger than most of the simulated $d_i$. In the end, the proportion of the simulated distances that are greater than the observed distance between A and B is the estimated p-value the hypothesis test. 
+The bootstrap procedure is illustrated in Figure \ref{fig:bootstrap_demo}. For a pair of cancer types A and B with distance $d$, I first aggregated all mutations from the two cancers to create a pool of mutations. I then simulated 2 imaginary cancers 1 and 2 by randomly drawing mutations from that previously constructed mutation pool. The constraint on the simulation is that the total number of mutations in 1 has to be the same as either A or B - likewise for 2. This constraint is so that the simulated cancers are as close to the original as possible, so the result is not interfered by other factors than GLE. I then measured the simulated distance $d_i$ between 1 and 2. This process was repeated $n$ = 1000 times. To conclude that A and B are significantly different from each other, $d_{obs}$ should be larger than most of the simulated $d_i$. In the end, the proportion of the simulated distances that are greater than the observed distance between A and B is the estimated p-value the hypothesis test. 
 
+\input{figures/methods_bootstrap}
 
-\section{Whole disease analysis of SCE}
+\section{Whole disease analysis of SCE}\label{methods:sce}
+Cancers are known to have distinctive compositions of mutations, which themselves consist of two components: the base substitution and the flanking bases. Together, the two components are called sequence context effect (SCE). This section describes the statistical techniques  to measure the information content available in both components.
+
+\subsection{Overview of the techniques to measure information}
+The nature of SCE for both the base substitutions and the flanking bases is simply count data determined by categorical variables, which can be displayed on a contingency table. It is straightforward to assign this type of data to have a multinomial distribution. To establish or not one categorical variable (\textit{e.g.} the cancers) is deterministic of another (\textit{e.g.} the types of mutations), one could assume product multinomial sampling. Due to the mathematical connection between the product multinomial and Poisson distributions, one could execute this  via a generalised linear model (GLM) under the Poisson distribution \citep{Nelder1974LOGSQUARES.}. This project used the implementation previously developed in the Huttley lab, whose key function is \texttt{glm} from R \citep{Zhu2017}.
+
+\subsubsection{Generalised linear model}
+Table \ref{tab:glm_demo} illustrates how GLM can be used to evaluate whether one categorical variable is predictive of another. Specifically, the example tests whether the composition of base substitutions from the wildtype T differs for cancer A and B. Answering this question requires a null model ($H_o$) that assumes no relationship and a saturated model ($H_a$) that assumes a correlation between cancer types ($\lambda_{cancer}$) and the substitution types ($\lambda_{sub}$). This correlation manifests through the $\lambda_{cancer:sub}$ that is present in $H_a$ but absent in $H_o$. By measuring the deviance statistic $D$ (equation \ref{eq:deviance}), \textit{i.e.} the departure of the null from the saturated model, and contrasting $D$ against the $\chi^2$ distribution, a p-value can be obtained. A small enough p-value (usually $<0.05$) means that $\lambda_{cancer}$ is predictive of $\lambda_{sub}$.
+
+\begin{equation}
+D = -2 \ln \frac{\hat{L}(saturated)}{\hat{L}(null)}
+\label{eq:deviance}
+\end{equation}
+where $D$ is the deviance statistic; $\hat{L}$ is the estimated maximum likelihood for the parameters in the corresponding models.
+
+\input{tables/methods_glm}
+
+\subsubsection{Relative entropy}
+To measure the amount of information contributed by each entry in the contingency table ($count$ in Table \ref{tab:glm_demo}), one use relative entropy ($RE$). $RE_i$ for the entry $i$ can be calculated via the deviance residual $r_i$ of the entry (appendix equation \ref{eq:dev_res}). Note that while the deviance $D$ measures the departure of the null from the saturated, $r_i$ is the contribution from entry $i$ to this departure, and the sum of all $r_i^2$ is equal to $D$. The reason why I chose $RE$, not deviance residual, to be the measure of information is because it scales the data by its sample size, thereby making comparison across different hypothesis tests valid. It is calculated as follows
+
+\begin{equation}
+    RE_i = \frac{r_i}{2n} 
+    \label{eq:re}
+\end{equation}
+
+where $RE_i$ is the relative entropy for entry $i$ of the contingency table; $r_i$ is its deviance residual and $n$ is the total counts. 
+
+\subsection{Base substitutions}
+\subsubsection{Composition of base substitutions for individual cancers}
+To examine the patterns of base substitution in a cancer, I calculated the $RE$'s when comparing that cancer to a ``null cancer'', where all mutation counts are the same (Table \ref{tab:glm_spectra}). Due to the difference in the abundance of nucleotides (\textit{e.g.} only 41\% of the human genome is CG, the rest is AT; the unbalance is potentially even greater when only one DNA strand is considered), I separately calculated four $RE$ sets for substitutions that involved different wildtype bases. Table \ref{tab:glm_spectra} illustrates the set whose wildtype base is T. 
+
+\input{tables/methods_glm_indidual_spectra}
+
+I visualised $RE$ for a cancer in the form of sequence logo plot. Each row of the plot corresponds to a model of a wildtype base, where the heights of the letters are the $RE$'s, which represent whether there is an abnormal excess/deficit of certain mutations in that cancer and the level of this abnormality.
+
+\subsubsection{Base substitutions across cancers}
+Having looked at the base substitutions for individual cancers, I examined how well base substitutions can be used to discriminate cancers. To compare two cancers, the contingency table for this analysis is similar to the example in Table \ref{tab:glm_demo}. Similar to the case of individual cancers, I analysed mutations from different wildtype bases separately. In addition to the $RE$'s, also looked at the p-values from the hypothesis tests. Since there are four hypothesis tests, there are four p-values, which I combined these p-values into one p-value using the Fisher's method \citep[details in \ref{apdx:fisher};][]{Fisher1992StatisticalWorkers}. Briefly, Fisher's method adds up all the logs of the member p-values, this value is doubled and contrasted against the $\chi^2$ distribution to obtain the final joint p-value.
+
+\subsection{Flanking bases}
+
+\input{figures/methods_flank}
+
 \section{Mutation-based classifier for cancers}
 \subsection{Standard procedure}
 \label{methods:ml}
-\subsection{Combining GLE with SCE in a joint model}
+\subsection{Classifier by GLE}
+\subsection{Classifier by SCE}
+\subsection{Combining GLE with SCE in a joint classifier}
