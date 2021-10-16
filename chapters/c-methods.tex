@@ -186,9 +186,18 @@ In the subsection, we are interested in the information content available in the
 
 \input{figures/methods_flank}
 
-\section{Mutation-based classifier for cancers}
-\subsection{Standard procedure}
-\label{methods:ml}
+\section{Mutation-based classifier for cancers}\label{methods:ml}
+Based on the premise that GLE and SCE are important aspects of a cancer mutation profile, this section explores how we could exploit the information from GLE and SCE for cancer classification. Because I trialled different approaches to represent data, I expect the known properties of the best performing approach should reveal important characteristics of the data. More critically, it should validate the findings from whole disease analyses, thereby consolidating our understanding of cancer mutagenesis.
+
+\subsection{Machine learning workflow}
+The fundamental value of a classifier is that it can be used to predict data not previously seen by the classifier. As such, for all classifiers trained in the subsequent subsections, I followed the same training procedures, as follows. 
+
+\subsubsection{K-nearest neighbours}
+Because I used pairwise distances between observations to describe both GLE and SCE, I use K-nearest neighbours \citep[KNN;][]{Neath2010DiscriminationClassification}, a distance-based algorithm, to train the classifier. There are two reasons there was a preference for distances over raw parameters. First, as in the case for most biological data, our data suffers from the curse of dimensionality \citep{Banks2003DataStatistics}, meaning there are more parameters than there are observations, making inference less robust. For example, the bin representation for GLE alone has about 3000 parameters corresponding to 3000 bins, while there are only about hundreds of donors available. Describing data in terms of distances is therefore a way to escape the curse of dimensionality. Second, I was interested in experimenting with different types of metrics that might better describe the data than the typically default Euclidean distance. The principle of the KNN algorithm is straightforward (Figure \ref{fig:knn_demo}): when prediction on an unknown donor needs to be made, KNN calculates the distances from the unknown to all known donors in the training set and identifies the nearest training points (known neighbours) to the unseen donor. The predicted cancer will be the predominant cancer within these neighbours.
+
+\subsubsection{F1-score}
+\subsubsection{Cross validation}
+
 \subsection{Classifier by GLE}
 \subsection{Classifier by SCE}
 \subsection{Combining GLE with SCE in a joint classifier}
