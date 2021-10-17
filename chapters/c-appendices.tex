@@ -67,3 +67,24 @@ To aggregate $k$ p-values, we could calculate the Fisher statistic $X$
     \label{eq:fisher}
 \end{equation}
 where $X$ is the Fisher statistic, $p_i$ is the member p-value. If converted from the log scale as seen in equation \ref{eq:fisher} to the normal scale, we could see that this is essentially the square of the product of the p-values. $X$ follows the $\chi^2_{2k}$ distribution, so we can easily obtain an aggregated p-value by contrasting $X$ against $\chi^2_{2k}$.
+
+\newpage
+\section{Supplementary computations for training classifier}
+
+\subsection{Accuracy measures}
+
+\subsubsection{Sensitivity}
+\begin{equation}
+    sensitivity_A = \frac{A_{pred(T)}}{A_{true}} 
+    \label{eq:sensitivity}
+\end{equation}
+where $sensitivity_A$ is the sensitivity for identifying A; $A_{pred}$ is the number of A's correctly predicted; $A_{true}$ is the number of true A's
+
+\subsubsection{Specificity}
+\begin{equation}
+    specificity_A = \frac{A_{pred(T)}}{A_{pred}}
+    \label{eq:specificity}
+\end{equation}
+where $specificity_A$ is the specificity for an observation to be A if it is predicted to be A; $A_{pred(T)}$ is the number of correctly predicted A; $A_{pred}$ is the number of observations predicted to be A.
+
+
