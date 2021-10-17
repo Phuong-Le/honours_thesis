@@ -87,4 +87,12 @@ where $sensitivity_A$ is the sensitivity for identifying A; $A_{pred}$ is the nu
 \end{equation}
 where $specificity_A$ is the specificity for an observation to be A if it is predicted to be A; $A_{pred(T)}$ is the number of correctly predicted A; $A_{pred}$ is the number of observations predicted to be A.
 
+\subsection{Kullback-Leibler divergence}
+The Kullback Leibler divergence of M from P is calculated as follows:
+
+\begin{equation}
+    d_{KL}(P|M) = \sum_{x \in X} p(x) \ln{\frac{p(x)}{m(x)}}
+    \label{eq:kl}
+\end{equation}
+where $X$ is the probability space on which $P$ and $M$ are defined; $p$ and $m$ represent the probability of $P$ and $Q$ at $x$. 
 
