@@ -51,7 +51,7 @@ where $d$ is the difference/distance, $i$ is the total lengths of the genomic re
 Once the distances for all possible pairs of cell types were obtained, I decomposed these distances into their relative coordinates by multi-dimensional scaling. This was done by the R function \texttt{cmdscale}. I reported the coordinates for the 3 most informative dimensions. %in the appendix?
 
 \subsection{Mutation location in relation to chromatin status}
-To establish the relationship between the mutation location of a cancer and the chromatin status of its original cell type, I sorted mutations into open and closed chromatin regions as per Figure \ref{fig:gle_workflow}. I then used 1. the G-test for whether we could reject the null that mutations occur without any preference for closed or open regions and 2. the odds ratio statistic to measure the bias towards closed regions.
+To establish the relationship between the mutation location of a cancer and the chromatin status of its original cell type, I sorted mutations into open and closed chromatin regions as per Figure \ref{fig:gle_workflow}. I then used (1) the G-test for whether we could reject the null that mutations occur without any preference for closed or open regions and (2) the odds ratio statistic to measure the bias towards closed regions.
 
 \input{figures/methods_gle_workflow}
 
@@ -278,3 +278,4 @@ where $d_J(x,y)$ is the entry for $x$ and $y$ to the joint distance matrix $D_J$
 
 The subsequent training step proceeded as described in subsection \ref{methods:ml_workflow}. Figure \ref{fig:joint} summarises the procedure for training the joint classifier.
 
+\input{figures/methods_joint_classifier}
