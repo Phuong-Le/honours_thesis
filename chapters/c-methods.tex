@@ -113,7 +113,7 @@ I separately used the Euclidean and Wasserstein distances for both representatio
 \paragraph{Euclidean} The Euclidean distance, also known as the Pythagorean distance is the most widely used distance. It is strictly the root sum of squares of the difference between each point on one density and its counterpart on the other density \citep[equation \ref{eq:euclid};][]{ONeill2006FrameFields}.
 
 \begin{equation}
-    d_E(a,b) = \sqrt{\sum_{i=1}^n (a_i - b_i)}
+    d_E(a,b) = \sqrt{\sum_{i=1}^n (a_i - b_i)^2}
     \label{eq:euclid}
 \end{equation}
 
@@ -189,11 +189,11 @@ In the subsection, we are interested in the information content available in the
 \section{Mutation-based classifier for cancers}\label{methods:ml}
 Based on the premise that GLE and SCE are important aspects of a cancer mutation profile, this section explores how we could exploit the information from GLE and SCE for cancer classification. Because I trialled different approaches to represent data, I expect the known properties of the best performing approach should reveal important characteristics of the data. More critically, it should validate the findings from whole disease analyses, thereby consolidating our understanding of cancer mutagenesis.
 
-\subsection{Machine learning workflow}
+\subsection{Machine learning workflow}\label{methods:ml_workflow}
 The fundamental value of a classifier is that it can be used to predict data not previously seen by the classifier. As such, for all classifiers trained in the subsequent subsections, I followed the same training procedures \citep{Zengyou2015DataApplications}, as follows. 
 
 \subsubsection{$K$-nearest neighbours}
-Because I used pairwise distances between observations to describe both GLE and SCE, I use $K$-nearest neighbours \citep[KNN;][]{Neath2010DiscriminationClassification}, a distance-based algorithm, to train the classifier. There are two reasons there was a preference for distances over raw parameters. First, as in the case for most biological data, our data suffers from the curse of dimensionality \citep{Banks2003DataStatistics}, meaning there are more parameters than there are observations, making inference less robust. For example, the bin representation for GLE alone has about 3000 parameters corresponding to 3000 bins, while there are only about hundreds of donors available. Describing data in terms of distances is therefore a way to escape the curse of dimensionality. Second, I was interested in experimenting with different types of metrics that might better describe the data than the typically default Euclidean distance. The principle of the KNN algorithm is straightforward (Figure \ref{fig:knn_demo}): when prediction on an unknown donor needs to be made, KNN calculates the distances from the unknown to all known donors in the training set and identifies the nearest training points (known neighbours) to the unseen donor. The predicted cancer will be the predominant cancer within these neighbours. This was done using \texttt{sklearn.neighbors.KNeighborsClassifier}.
+Because I used pairwise distances between observations to describe both GLE and SCE, I use $K$-nearest neighbours \citep[KNN;][]{Neath2010DiscriminationClassification}, a distance-based algorithm, to train the classifier. There are two reasons there was a preference for distances over raw parameters. First, as in the case for most biological data, our data suffers from the curse of dimensionality \citep{Banks2003DataStatistics}, meaning there are more parameters than there are observations, making inference less robust. For example, the bin representation for GLE alone has about 3000 parameters corresponding to 3000 bins, while there are only about hundreds of donors available. Describing data in terms of distances is therefore a way to escape the curse of dimensionality. Second, I was interested in experimenting with different types of metrics that might better describe the data than the typically default Euclidean distance. The principle of the KNN algorithm is straightforward (Figure \ref{fig:knn_demo}). The input into the classifier is a pairwise distance matrix between all donors. When prediction on an unknown donor needs to be made, KNN calculates the distances from the unknown to all known donors in the training set and identifies the nearest training points (known neighbours) to the unseen donor. The predicted cancer will be the predominant cancer within these neighbours. This was done using \texttt{sklearn.neighbors.KNeighborsClassifier}.
 
 \input{figures/methods_knn}
 
@@ -212,10 +212,11 @@ Training a KNN classifier where inputs are distances, as in our case, simply mea
 \input{figures/methods_cross_validation}
 
 \subsection{Classifier by GLE}
-To classify cancers based on GLE, I experimented with two representations: bin \& smoothing and two distance measures: Euclidean \& Wasserstein distance. Details about the techniques of these representations and measures have been described in subsection \ref{methods:bootstrap}. The difference is that this section is on the individual donor scale.
+To classify cancers based on GLE, I experimented with two representations: bin \& smoothing and two distance measures: Euclidean \& Wasserstein distance. Details about the techniques of these representations and measures have been described in subsection \ref{methods:bootstrap}. The difference is that this section is on the individual donor scale. Briefly, for each donor, GLE was represented in the form of either the bin or the smoothing approach. For each representation, Euclidean and Wasserstein distances were then calculated for each pair of donors. The classifier was then trained as per the procedure outlined above.
 
 \newpage
 \subsection{Classifier by SCE}
+In this subsection, I trialled different representations of SCE, all representations used the Jensen-Shannon distance. 
 
 \subsubsection{Jensen-Shannon distance}
 I used Jensen-Shannon distance \citep[JSD;][]{Osterreicher2003} as the measure of distance to classify cancers based on SCE. JSD is an appropriate measure for composition data like SCE because it gives weights to the more dominant elements. For example, the contribution of C$\rightarrow$T mutations to the JSD between two donors depends on both the difference in  C$\rightarrow$T and the abundance of C$\rightarrow$T in the two donors. Additionally, JSD is the symmetric version of the Kullback-Leibler divergence \citep{Kullback1951}. It is calculated as follows:
@@ -225,18 +226,55 @@ I used Jensen-Shannon distance \citep[JSD;][]{Osterreicher2003} as the measure o
 \end{equation}
 where $d_{JS}(P,Q)$ is the JSD between the SCE of donors P and Q; M is the average between P and Q: $M = \frac{P+Q}{2}$; $d_{KL}(P|M)$ is the Kullback-Leibler divergence of M from P, likewise for Q. $d_{KL}$ can be calculated as per equation \ref{eq:kl} in the appendix.
 
+The representations of the vectors to train the KNN classifier based on JSD are described below.
+
 \subsubsection{Comparing 1-mer, 3-mer and 5-mer}
 Due to SCE's nature as composition data, the most obvious way to represent SCE is the proportion of mutations. To be precise, the vector that represents SCE for a donor is the count of different mutation types, divided by the total number of mutations. However, it is worth noting that as the k-mer size increases, the number of elements in the SCE vector surges very rapidly, according to equation \ref{eq:sce_counts}. This is explained in Figure \ref{fig:sce_counts}.
 
-\begin{equation}
-    l = 12 \times 4^{k-1}
-    \label{eq:sce_counts}
-\end{equation}
-where $l$ is the number of elements and $k$ is the k-mer size, so $k-1$ is the number of flanking bases involved
+\input{figures/methods_sce_counts}
 
-\subsubsection{Strand symmetric \textit{v.s.} asymmetric representations}
+\subsubsection{Strand asymmetric, semi-symmetric and fully-symmetric representations}
+The rapid growth in the number of mutations when incorporating more flanking positions inevitably results in sparse vectors with many 0 values, as some donors only have hundreds of mutations. Accordingly, I investigated whether introducing strand symmetry, at the expense of some information loss, could address this issue. Therefore, this analysis could also reveal a mechanism of mutagenesis in cancer, which is whether mutation strand symmetry exists or not. There are three levels of strand symmetry involved, asymmetry, semi-symmetry and full-symmetry. Specifically, asymmetry is the normal mutation counts described above. For semi-symmetry, as described in Figure \ref{fig:motif_symmetric_demo}, whatever mutations that start with G or T were counted as part of the mutations on their reverse complementary strand. The fully symmetric representation is even more stringent, it restricts the alphabet of the flanking bases to be A and C rather than A, C, T and G. This means that on the flanking base components, T was counted as A and G was counted as C. Table \ref{tab:sce_symmetric} summarises the properties of the three representations.
+
+\input{tables/methods_sce_symmetric}
+
 \subsubsection{Dissecting the 5-mer sequence context}
+A second approach to reduce the sparsity of large sequence contexts (in this case 5-mer), without loss of information, is to dissect them into smaller submotifs. Specifically, instead of one count vector that incorporates all flanking positions of 5-mer, I computed multiple submotif vectors that incorporate 1 (2-submotif) or 2 (3-submotif) flanking positions with the mutations. A summary of these representations is presented in table \ref{tab:submotif}
+
+\input{tables/methods_submotif}
+
+While previous approaches approaches calculated one single type of vector, which outputs a pairwise distance matrix, to train the KNN classifier, this approach computed pairwise distance matrices for all submotif vectors, then amalgamated these matrices by averaging all their elements. The pairwise distance matrix acquired from this procedure was used to train the classifier for submotifs. 
 
 \subsection{Combining GLE with SCE in a joint classifier}
+Because GLE and SCE are separate sources of information, in this section, I attempted to combine the two factors to see if it could further improve the predictive power compared to each factor by itself.
+
 \subsubsection{Kernel normalisation}
-\subsubsection{Weighting}
+GLE and SCE have different units, leading to the need to normalise them. By normalising the data, the joint classifier can simultaneously avoid one factor being dominated by the other purely due to their mismatched numerical scales and assess which factor is the stronger determinant of cancer . For each factor, the normalisation step was done by converting its pairwise distance matrix into a pairwise kernel matrix. It is worth noting that intuitively, the distance matrix measures the difference between data points and kernel matrix measures the similarity between them. I used the Laplacian kernel function for each element of the distance matrix \citep{Wang2016ApplicationFunction}, as follows:
+
+\begin{equation}
+    k(x,y) = exp( - \frac{d(x,y)}{\sigma})
+    \label{eq:laplacian}
+\end{equation}
+where $k$ is an entry of the resulting kernel matrix corresponding to the pair of data points (\textit{i.e.} donors) $x$ and $y$; $d(x,y)$ is the distance between $x$ and $y$ in the distance matrix; $\sigma$ is intuitively the scale parameter. I set $\sigma$ the median of the distance matrix, excluding the case where $x$ and $y$ are the same. This ensures that the normalised matrices are numerically on the same scale, meaning that all entries are within the [0,1] range.
+
+After the normalisation step, I obtained a normalised pairwise kernel matrix $G$ for GLE and $S$ for SCE.
+
+\subsubsection{Weighted combination of GLE and SCE}
+I trialled different weights on the linear combination of the kernel matrices $G$ and $S$ according to equation \ref{eq:joint}
+
+\begin{equation}
+    J = gG + (1-g)S
+    \label{eq:joint}
+\end{equation}
+where $J$ is the joint kernel matrix; $G$ and $S$ are the kernel matrices for GLE and SCE; $g$ is the weight given to $G$, $1-g$ is the weight given to $S$, $g$ and $1-g$ take values 0, 0.1, 0.2,..., 1.
+
+I then converted the joint kernel matrix $J$ into a joint distance matrix $D_J$ using the standard generic approach \citep[more in the appendix equation \ref{eq:k2d_ori};][]{Phillips20112Distance}
+
+\begin{equation}
+    d_J(x,y) = \sqrt{2 - 2k(x,y)}
+    \label{eq:k2d}
+\end{equation}
+where $d_J(x,y)$ is the entry for $x$ and $y$ to the joint distance matrix $D_J$; $k(x,y)$ is the entry to the joint kernel matrix $J$.
+
+The subsequent training step proceeded as described in subsection \ref{methods:ml_workflow}. Figure \ref{fig:joint} summarises the procedure for training the joint classifier.
+
