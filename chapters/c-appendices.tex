@@ -94,5 +94,17 @@ The Kullback Leibler divergence of M from P is calculated as follows:
     d_{KL}(P|M) = \sum_{x \in X} p(x) \ln{\frac{p(x)}{m(x)}}
     \label{eq:kl}
 \end{equation}
-where $X$ is the probability space on which $P$ and $M$ are defined; $p$ and $m$ represent the probability of $P$ and $Q$ at $x$. 
+where $X$ is the probability space on which $P$ and $M$ are defined; $p$ and $m$ represent the probability of $P$ and $Q$ at $x$.
+
+\subsection{Converting kernel to distance matrix}
+
+\begin{equation}
+    d(x,y) = k(x,x) + k(y,y) - 2k(x,y) 
+    \label{eq:k2d_ori}
+\end{equation}
+where $d(x,y)$ is the entry for $x$ and $y$ to the joint distance matrix; $k(x,y)$ is the entry to the kernel matrix $J$. Because using the Laplacian kernel forces the diagonals, or $k(x,x)$ and $k(y,y)$, to be 1, the formula could be simplified as in \ref{eq:k2d}.
+
+
+
+
 
