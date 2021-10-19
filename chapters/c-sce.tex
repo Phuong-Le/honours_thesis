@@ -3,8 +3,11 @@
 Different cancers develop under the influence of different conditions, especially mutagens and repair systems, thus each cancer type possesses a distinctive mutation composition. Regarding individual mutation, each base change is closely integrated with the bases next to it \citep{Zhu2017,Zhu2020,Vinson2012CGMethylation}. The question is whether flanking bases beyond 3-mers, specifically positions -2 \& +2, have an influence on whether the mutations occur. Using a measure of information richness, \gls{re}, this chapter demonstrates the importance of both the composition of base changes and their flanking bases in characterising the carcinogenesis pattern, with evidence of strand symmetry. Above all, the chapter shows that the \gls{sce} is not just contributed by immediate flanking bases (\textit{i.e.} 3-mers). Rather, there is certain value in factoring larger sequence contexts into analysing cancer mutation composition.
 
 \section{Base substitutions are indicative of cancers}
+SCE consists of two components, the middle base substitutions and the flanking bases. This section focuses on the first component.
 
-\subsection{Base substitutions alone are a rich source of information}
+\subsection{Base substitutions are a rich source of information}
+To explore the patterns of base substitutions and its potential contribution to SCE, I calculated $RE$'s for each mutation of every cancer. $RE$'s are essentially the information which the null cannot capture. Here, the null assumed that all mutations with the same wildtype occurred at the same rates (details in \ref{methods:re}). I plotted $RE$ as sequence logos in Figures \ref{fig:spectra} and \ref{fig:apdx_spectra}, where the height of the letter is the $RE$ of the mutation and its orientation dictates whether the mutation is in excess (up) or deficit (down). We are interested in the shape of the sequence logos. Three features stand out from the plots. First, base substitutions were strand symmetric for all cancers because the plots are point symmetric. That is, $RE$'s are similar for reverse complementary mutations (\textit{e.g.} C$\rightarrow$T and G$\rightarrow$A). Second, the heights of the up-oriented letters for transitions signifies that they were more abundant than transversions. Third, by visualisation, the patterns of base substitutions were very diverse. For example, Skin-Melanoma were predominated by C$\rightarrow$T, but this was not necessarily true in other cancers, such as Liver-HCC. Indeed, Liver-HCC was more strongly0 characterised by the A$\rightarrow$G transitions.
 
+\input{figures/sce_spectra}
 
-\section{Information available in both inner and outer flanking bases to the mutations}
+\section{Information available in flanking bases}
