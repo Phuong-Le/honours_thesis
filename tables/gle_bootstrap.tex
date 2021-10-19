@@ -1,0 +1,59 @@
+\begin{table}[!htb]
+    \caption{\textbf{Estimated p-values from bootstrap hypothesis tests involving 1000 simulations for (a) Bin/Euclidean, (b) Bin/Wasserstein, (c) Smooth/Euclidean, (d) Smooth/Wasserstein} No multiple test correction was applied. All estimated p-values were $<0.001$ unless otherwise specified.}
+    \label{tab:gle_bootstrap}
+    % row 1
+    \begin{subtable}[!h]{.5\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm}p{2.7cm}c }
+        & \textbf{CNS-PiloAstro} & \textbf{others} \\
+        \textbf{CNS-Medullo} & 0.121 & - \\
+        \textbf{Kidney-RCC} & 0.024 & - \\
+        \textbf{Liver-HCC} & 0.121 & - \\
+        \textbf{Panc-Endocrine} & 0.069 & - \\
+        \textbf{Prost-AdenoCA} & 0.009 & - \\
+        \textbf{all others} & - & - \\
+        \end{tabular}
+        \vspace{0.2cm}
+    \subcaption{Bin/Euclidean}
+    \end{subtable} 
+    \quad % for side by side tables
+    \begin{subtable}[!h]{.5\textwidth}
+        \centering
+        \begin{tabular}{ p{2.9cm}p{2.7cm}c }
+        & \textbf{CNS-PiloAstro} & \textbf{others} \\
+        \textbf{Bone-Osteosarc} & 0.034 & - \\
+        \textbf{Panc-AdenoCA} & 0.024 & - \\
+        \textbf{Skin-Melanoma} & 0.017 & - \\
+         &  &  \\
+         &  &  \\
+        \textbf{all others} & - & - \\
+        \end{tabular}
+        \vspace{0.2cm}
+    \subcaption{Bin/Wasserstein}
+    \end{subtable}  
+    % row 2
+    \begin{subtable}[!h]{.5\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm}p{2.7cm}c }
+        &  & \textbf{All} \\
+        &  &  \\
+        &  &  \\
+        \textbf{All} & - & - \\
+        \end{tabular}
+        \vspace{0.2cm}
+    \subcaption{Smooth/Euclidean}
+    \end{subtable} 
+    \quad % for side by side tables
+    \begin{subtable}[!h]{.5\textwidth}
+        \centering
+        \begin{tabular}{ p{2.9cm}p{2.7cm}c }
+        & \textbf{CNS-PiloAstro} & \textbf{others} \\
+        \textbf{Panc-AdenoCA} & 0.005 & - \\
+        \textbf{Prost-AdenoCA} & 0.031 & - \\
+        \textbf{all others} & - & - \\
+        \end{tabular}
+        \vspace{0.2cm}
+    \subcaption{Smooth/Wasserstein}
+    \end{subtable}  
+    
+\end{table}
