@@ -10,4 +10,9 @@ To explore the patterns of base substitutions and its potential contribution to 
 
 \input{figures/sce_spectra}
 
-\section{Information available in flanking bases}
+\subsection{Base substitutions differ in different cancers}
+To further confirm that base substitutions could distinguish cancers, I performed a hypothesis test for difference between each cancer pair. One such hypothesis test was an aggregation of 4 GLM, each corresponding to a wildtype base. The 4 p-values from GLM were combined by Fisher's method to obtain a single joint p-value. All pairwise comparisons were statistically significant, with the highest p-value coming from comparing CNS-Medullo with CNS-PiloAstro at 0.0095 after Bonferroni correction. Figure \ref{fig:paired_spectra} demonstrates how individual substitutions could contribute to the whole information content of the test. It is no surprise that in Figure \ref{fig:spectra_kidney_skin}, there was a deficit in C$\rightarrow$T/G$\rightarrow$A in Kidney-RCC with respect to Skin-Melanoma, as we have seen previously that the abundance of C$\rightarrow$T/G$\rightarrow$A was somewhat one ``signature'' of Skin-Melanoma. The same can be said about A$\rightarrow$G/T$\rightarrow$C when comparing Kidney-RCC to Liver-HCC (Figure \ref{fig:spectra_kidney_liver}).
+
+\input{figures/sce_paired_spectra}
+
+\section{Flanking bases also contain information}
