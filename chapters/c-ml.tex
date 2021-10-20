@@ -5,8 +5,14 @@ Chapter \ref{gle} demonstrates that the \gls{gle} contributes to characterising 
 While each of the next sections works on different inputs, all sections follow the same procedure for training the classifier (\ref{methods:ml_workflow}). Briefly, a small proportion of data is set aside as a test set, which is then used to evaluate model performance.
 
 \section{Classifier based on GLE}\label{ml:gle}
+This section seeks to identify an optimal approach to extract the most information from GLE for cancer prediction. Specifically, I trialled the bin \textit{v.s.} smoothing representations together with the Euclidean \textit{v.s.} Wasserstein distances. I iterated the training procedures 10 times to estimate the range of the $F1$ score obtained from these approaches. $F1$ was chosen as the accuracy measure as it takes into consideration both sensitivity and specificity. This is summarised in Figure \ref{fig:f1_gle}. For Euclidean, the smoothing was much better than the bin approach. This was also very clear when inspecting the confusion matrices (Figure \ref{fig:ml_gle}), where many more observations lied on the diagonals. This is consistent with the bootstrap results from section \ref{gle:bootstrap}. For Wasserstein, the difference between the smoothing and bin approach was not obvious (Figure \ref{fig:f1_gle} and \ref{}). Overall, the results suggest that the smoothing representation has a higher predictive power and that the Wasserstein distance has some interesting properties, discussed in \ref{}.
 
 \input{figures/ml_gle}
 
 \section{Classifier based on SCE}\label{ml:sce}
+
+\subsection{3-mer is the most accurate sequence context size}
+
+\subsection{Dissecting 5-mer into submotifs can potentially improve accuracy}
+
 \section{Classifier based on the combination of GLE and SCE}\label{ml:both}
