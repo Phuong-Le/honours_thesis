@@ -9,10 +9,16 @@ This section seeks to identify an optimal approach to extract the most informati
 
 \input{figures/ml_gle}
 
+\newpage
 \section{Classifier based on SCE}\label{ml:sce}
 
 \subsection{3-mer is the most accurate sequence context size}
+To train a classifier based on SCE, I experimented with incorporating the flanking bases to the mutation composition, including the context sizes of 1-mer, 3-mer and 5-mer, where 1-mer is the base substitution without any context. In parallel, I trialled imposing asymmetry (no symmetry), semi-symmetry (reverse complementary strand symmetry) and full-symmetry (reverse complementary strand symmetry and flanking bases restricted to be A and C). Figure \ref{fig:f1_sce} shows the $F1$ for these approaches. In general, SCE was more accurate then GLE. However, the fully symmetric representation severely dropped in accuracy when flanking bases were involved, which suggests that it introduced noise to the data. Asymmetry and semi-symmetry performed roughly similarly, with 3-mer being the most accurate representation, reinforcing the evidence of strand symmetry previously seen in \ref{sce}. Assuming asymmetry and semi-symmetry is equivalent, $F1$ being lower for 5-mer than 3-mer but higher for semi-symmetry than asymmetry is very curious. It suggests the potential impact of splitting up mutation counts into too many elements in 5-mer (Table \ref{tab:sce_symmetric}).
+
+\input{figures/ml_sce}
 
 \subsection{Dissecting 5-mer into submotifs can potentially improve accuracy}
+
+
 
 \section{Classifier based on the combination of GLE and SCE}\label{ml:both}
