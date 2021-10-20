@@ -18,7 +18,8 @@ To train a classifier based on SCE, I experimented with incorporating the flanki
 \input{figures/ml_sce}
 
 \subsection{Dissecting 5-mer into submotifs can potentially improve accuracy}
+Suspecting that the poor performance of 5-mer was due to the long vector that represented it, I tried splitting up 5-mers into smaller vectors (submotifs) then using the linear combination of them as input into the classifier (Table \ref{tab:submotif}). To demonstrate, for 2-submotifs, I split the long 5-mer vector into 4 shorter vectors that only involved 2 positions, including the base substitution. Figure \ref{fig:f1_sce_submotif} shows that the splitting did improve $F1$ compared to the original whole 5-mer vector, particularly the 3-submotif representation. This is very promising, but at this point it is uncertain whether it was the information from outer flanking positions or the 3-mer incorporated in the 3-motifs that drove this accuracy improvement.
 
-
+\input{figures/ml_sce_submotif}
 
 \section{Classifier based on the combination of GLE and SCE}\label{ml:both}
