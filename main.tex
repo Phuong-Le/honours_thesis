@@ -91,7 +91,7 @@
 \titlecontents{part}% <section-type>
   [0pt]% <left>
   {\addvspace{0.5cm}\large\bfseries}% <above-code>
-  {\thecontentslabel\quad}% <numbered-entry-format>
+  {Part \thecontentslabel\quad}% <numbered-entry-format>
   {}% <numberless-entry-format>
   {\hfill\contentspage}% <filler-page-format>
 
@@ -121,6 +121,7 @@
 % glossary
 \usepackage[stylemods=longextra]{glossaries-extra}
 \setglossarystyle{longragged3colheader}
+%TC:ignore
 \input{glossary}
 
 % These Commands create the label style for tables, figures and equations.
@@ -151,6 +152,7 @@
 \pagenumbering{roman}
 
 \begin{document}
+
 \input{decorations/titlepage}
 \input{decorations/titleback}
 \input{decorations/prologue}
@@ -171,10 +173,11 @@
 \pagenumbering{arabic}
 
 \input{chapters/c-intro}
+
 \newpage
 
 \part{Results: Whole disease analysis}{
-    The next two chapters report the results from whole disease analysis of genomic location effect (\gls{gle}) and sequence context effect (\gls{sce}), respectively. In particular, this part dwells on \textbf{whether} GLE and SCE are informative about different cancer types, and explores \textbf{in what way} they are informative. This acts as a basis for training the \gls{classifier} in chapter \ref{ml}.}
+    The next two chapters report the results from whole disease analysis of genomic location effect (\gls{gle}) and sequence context effect (\gls{sce}), respectively, for the 12 cancers of interest (Tables \ref{tab:encode}, \ref{tab:mutation_summary} and Figure \ref{fig:mutation_summary}). In particular, this part evaluates \textbf{whether} GLE and SCE are informative about different cancer types, and explores \textbf{in what way} they are informative. This acts as a basis for the development of the \glspl{classifier} in chapter \ref{ml}.}
 
 \input{chapters/c-gle}
 \input{chapters/c-sce}
@@ -185,12 +188,14 @@
 \input{chapters/c-ml}
 
 \input{chapters/c-discussion}
+%TC:endignore
 \input{chapters/c-methods}
-
+%TC:ignore
 \bibliographystyle{geneticsstyle}
 \bibliography{references,references_extended}
 \addcontentsline{toc}{chapter}{Bibliography}
 
 \input{chapters/c-appendices}
 
+%TC:endignore
 \end{document}
