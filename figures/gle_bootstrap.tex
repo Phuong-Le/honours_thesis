@@ -1,30 +1,30 @@
 \begin{figure}[ht!]
     \begin{subfigure}{.5\textwidth}
-    \includegraphics[width=\linewidth,height=0.7\textwidth]{graphics/bootst-Melanoma.png}
-    \caption{Skin-Melanoma}
-    \label{fig:density_skin}
+    \includegraphics[scale=0.7]{graphics/bootstrap_bins_euclidean.pdf}
+    \caption{Bins/Euclidean}
+    \label{fig:bootstrap_bins_euclidean}
     \end{subfigure}
     ~
     \begin{subfigure}{.5\textwidth}
     
-    \includegraphics[width=\linewidth,height=0.7\textwidth]{graphics/mutdistribution_Kidney-RCC.png}
-    \caption{Kidney-RCC}
-    \label{fig:density_kidney}
+    \includegraphics[scale=0.7]{graphics/bootstrap_bins_wasserstein.pdf}
+    \caption{Bins/Wasserstein}
+    \label{fig:bootstrap_bins_wasserstein}
     \end{subfigure} \\
     \vspace{0.5cm}
     
     \begin{subfigure}{.5\textwidth}
-    \includegraphics[width=\linewidth,height=0.7\textwidth]{graphics/mutdistribution_Liver-HCC.png}
-    \caption{Liver-HCC}
-    \label{fig:density_liver}
+    \includegraphics[width=\linewidth,height=0.7\textwidth]{graphics/bootstrap_smooth_euclidean.pdf}
+    \caption{Smooth/Euclidean}
+    \label{fig:bootstrap_smooth_euclidean}
     \end{subfigure}
     ~
     \begin{subfigure}{.5\textwidth}
-    \includegraphics[width=\linewidth,height=0.7\textwidth]{graphics/mutdistribution_Panc-AdenoCA.png}
-    \caption{Panc-AdenoCA}
-    \label{fig:density_panc_adenoca}
+    \includegraphics[width=\linewidth,height=0.7\textwidth]{graphics/bootstrap_smooth_wasserstein.pdf}
+    \caption{Smooth/Wasserstein}
+    \label{fig:smooth_wasserstein}
     \end{subfigure} \\
     
-    \caption{\textbf{Mutations tend to be found in closed chromatin regions.} Different cancers differ in the distribution of mutations across the genome. Here chromosome 12 is shown. (a) Skin-Melanoma (b) Kidney-RCC (c) Liver-HCC (d) Panc-AdenoCA, the other cancers are shown in Figure \ref{fig:apdx_mutation_density}. The shaded bars below the x-axis indicate open chromatin regions, the gaps indicate closed chromatin regions of the original cell types. The vertical dotted line indicates the position of the centromere.}
-    \label{fig:mutation_density}
+    \caption{\textbf{GLE was generally significantly different between cancers according to bootstrap hypothesis test using (a) Bin/Euclidean, (b) Bin/Wasserstein, (c) Smooth/Euclidean, (d) Smooth/Wasserstein.} No multiple test correction was applied. All estimated p-values were $<0.001$ unless otherwise specified.}
+    \label{fig:bootstrap}
 \end{figure}
