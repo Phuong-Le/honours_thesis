@@ -171,7 +171,7 @@
 \newpage
 
 \pagenumbering{arabic}
-
+%TC:endignore
 \input{chapters/c-intro}
 
 \newpage
@@ -186,11 +186,11 @@
     Based on the finding presented in chapter \ref{gle} and \ref{sce}, the following chapter will present the \gls{classifier} built on \gls{gle} and \gls{sce}. Briefly, this part trials different distance measures to estimate the dissimilarity between each pair of individual donors using the \gls{knn}. The accuracy of each approach, reported as \glspl{confusion matrix} and F1, reveals interesting characteristics of cancer mutation data.}
 
 \input{chapters/c-ml}
-
-\input{chapters/c-discussion}
-%TC:endignore
-\input{chapters/c-methods}
 %TC:ignore
+\input{chapters/c-discussion}
+
+\input{chapters/c-methods}
+
 \bibliographystyle{geneticsstyle}
 \bibliography{references,references_extended}
 \addcontentsline{toc}{chapter}{Bibliography}
