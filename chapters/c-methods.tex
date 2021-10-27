@@ -170,7 +170,7 @@ To measure the amount of information contributed by each entry in the contingenc
 
 where $RE_i$ is the relative entropy for entry $i$ of the contingency table; $r_i$ is its deviance residual and $n$ is the total counts. 
 
-\subsection{Base substitutions}
+\subsection{Base substitutions}\label{methods:spectra}
 \subsubsection{Composition of base substitutions for individual cancers}
 To examine the patterns of base substitution in a cancer, I calculated the $RE$'s when comparing that cancer to a ``null cancer'', where all mutation counts are the same (Table \ref{tab:glm_spectra}). Due to the difference in the abundance of nucleotides (\textit{e.g.} only 41\% of the human genome is CG, the rest is AT; the unbalance is potentially even greater when only one DNA strand is considered), I separately calculated four $RE$ sets for substitutions that involved different wildtype bases. Table \ref{tab:glm_spectra} illustrates the set whose wildtype base is T. 
 
@@ -181,7 +181,7 @@ I visualised $RE$ for a cancer in the form of sequence logo plot. Each row of th
 \subsubsection{Base substitutions across cancers}
 Having looked at the base substitutions for individual cancers, I examined how well base substitutions can be used to discriminate cancers. To compare two cancers, the contingency table for this analysis is similar to the example in Table \ref{tab:glm_demo}. Similar to the case of individual cancers, I analysed mutations from different wildtype bases separately. In addition to the $RE$'s, also looked at the p-values from the hypothesis tests. Since there are four hypothesis tests, there are four p-values, which I combined these p-values into one p-value using the Fisher's method \citep[details in \ref{apdx:fisher};][]{Fisher1992StatisticalWorkers}. Briefly, Fisher's method adds up all the logs of the member p-values, this value is doubled and contrasted against the $\chi^2$ distribution to obtain the final joint p-value.
 
-\subsection{Flanking bases}
+\subsection{Flanking bases}\label{methods:nbr}
 In the subsection, we are interested in the information content available in the flank base component of SCE, including positions -1, +1, -2 and +2 with respect to the mutation. Analogically to the base substitution, I separated the analysis for different mutations due to their different frequencies of occurrence. Figure \ref{fig:nbr_demo} illustrates how how information can be measured for position +1 of the C$\rightarrow$T mutation in some cancer A. Specifically, the analysis measures the extent to which bases found next to the C$\rightarrow$T mutation tend to differ from bases next to a randomly selected C in the genome. To do this, for each C$\rightarrow$T I randomly selected a C in the genome and recorded the base at position +1. I then received a contingency table. Using the models in formulae \ref{eq:nbr_demo}, I obtained the $RE$'s, as described in subsection \ref{methods:re}, whose total is the desired measure of information. I measured the total $RE$ for all other flank positions of the 5-mer context and all other mutations.
 
 \input{figures/methods_flank}
