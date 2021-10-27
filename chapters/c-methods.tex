@@ -215,7 +215,7 @@ Training a KNN classifier where inputs are distances, as in our case, simply mea
 To classify cancers based on GLE, I experimented with two representations: bin \& smoothing and two distance measures: Euclidean \& Wasserstein distance. Details about the techniques of these representations and measures have been described in subsection \ref{methods:bootstrap}. The difference is that this section is on the individual donor scale. Briefly, for each donor, GLE was represented in the form of either the bin or the smoothing approach. For each representation, Euclidean and Wasserstein distances were then calculated for each pair of donors. The classifier was then trained as per the procedure outlined above.
 
 \newpage
-\subsection{Classifier by SCE}
+\subsection{Classifier by SCE}\label{methods:ml_sce}
 In this subsection, I trialled different representations of SCE, all representations used the Jensen-Shannon distance. 
 
 \subsubsection{Jensen-Shannon distance}
