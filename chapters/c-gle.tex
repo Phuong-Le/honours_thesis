@@ -8,7 +8,7 @@ My analyses of GLE were motivated observations that suggests mutations tend to l
 
 \input{figures/gle_mutation_density}
 
-\subsection{Some cancers were more similar than others in terms of chromatin structures}
+\subsection{Some cancers were more similar than others in terms of chromatin structures}\label{gle:pca}
 In investigating whether the diversity in GLE is influenced by chromatin structure, one factor worth considering is how cancers relate to each other by the chromatin structure of their original cells to begin with. To compute the difference between the DHS of two original cell types, I identified the span of the intersection of their open chromatin regions and converted it into a distance (details in Methods \ref{methods:encode_pca}). The distance between every pair of cells allows calculating and visualising their relative coordinates using multidimensional scaling. Figure \ref{fig:encode_pca} shows the three most informative dimensions (PC1, PC2 and PC3) for the relationship between the original cells of cancers. Melanocyte and hepatocyte had the most distinct chromatin structures as they were relatively far away from the other cell types. On the other hand, prostate epithelium (ProstEpi) and exocrine cells of the pancreatic duct (PancDuct) were very close with respect to DHS on both panels of Figure \ref{fig:encode_pca}.
 
 \input{figures/apdx_encode_pca}

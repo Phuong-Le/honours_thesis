@@ -26,9 +26,17 @@
 % \input{tables/apdx_encode_pca}
 
 \newpage
-\section{Supplementary computations for smoothing GLE}
-\subsection{Gaussian kernel density estimation}
+\section{Supplementary computations for GLE}
+\subsection{Bonferroni multiple test correction}
+For $n$ p-values from the same statistical analysis, p-values can be adjusted by Bonferroni multiple test correction as follows
 
+\begin{equation}
+    p_{adjusted} = p \times n
+    \label{eq:bonferroni}
+\end{equation}
+where $p_{adjusted}$ is the adjusted p-value, $p$ is the raw p-value, $n$ is the number of p-values obtained from the analysis.
+
+\subsection{Gaussian kernel density estimation}
 Kernel functions estimate the density of data at a particular location by measuring the distance from that location to all observed data points. To estimate mutation density across the genome, I used the Gaussian kernel, as follows:
 
 \begin{equation}
@@ -136,4 +144,11 @@ where $d(x,y)$ is the entry for $x$ and $y$ to the joint distance matrix; $k(x,y
 \subsection{Classifier by GLE - Wasserstein distance}
 \input{figures/apdx_ml_gle}
 
-\subsection{Classifer by SCE}
+\newpage
+\subsection{Classifier by SCE}
+
+\subsubsection{Comparing 1-mer, 3-mer, 5-mer and asymmetric \textit{v.s.} semi-symmetric representation}
+\input{figures/apdx_ml_sce}
+
+\subsubsection{Dissecting 5-mer into submotifs}
+\input{figures/apdx_ml_submotifs}

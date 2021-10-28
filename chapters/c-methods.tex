@@ -1,44 +1,44 @@
 \chapter{Methods}\label{methods}
 
-For this project, I am interested in two factors that help characterise the cancer mutation profile: genomic location effect (GLE) and sequence context effect (SCE; Figure \ref{fig:workflow}). I examined each factor on two complementary scales: analysis of whole disease (section \ref{methods:gle} and \ref{methods:sce}) and cancer classification for individuals (section \ref{methods:ml}). The former somewhat plays the role of a biological basis for the latter, whereas the latter could validate the patterns detected by the former.
+For this project, I am interested in two factors that help characterise the cancer mutation profile: genomic location effect (GLE) and sequence context effect (SCE; Figure \ref{fig:workflow}). I examined each factor on two complementary scales: analysis of whole disease (section \ref{methods:gle} and \ref{methods:sce}) and cancer classification for individuals (section \ref{methods:ml}). The former was partly used to interrogate the biological basis for the latter, whereas the latter could validate the patterns detected by the former.
 
 \input{figures/methods_workflow}
 
 \section{Data description}
 \subsection{PCAWG - Mutation data:} 
-The critical source of data for the project is the Pan-Cancer Analysis of Whole Genome (PCAWG) project \citep{Campbell2020}. This data consists of whole genome sequencing of both cancerous and healthy tissues (mostly blood) for all cancer patients. PCAWG relies on contrasting the cancerous against healthy tissues to determine whether a mutation is a \gls{sommut}. Identifying mutations by combining three established pipelines (Sanger \citep{Jones2016CgpCaVEManWrapper:Data}, EMBL/DKFZ \citep{Rimmer2014IntegratingApplications}, and Broad \citep{Cibulskis2013SensitiveSamples}), the project provides a valuable resource, which covers 2658 cancer samples from 28 cancer types, for studying cancer mutagenesis.
+The critical source of data for the project was the mutation data provided by the Pan-Cancer Analysis of Whole Genome (PCAWG) project \citep{Campbell2020}. This data consisted of whole genome sequencing of both cancerous and healthy tissues (mostly blood) for all cancer patients, covering 2658 cancer samples from 28 cancer types. PCAWG relied on contrasting the cancerous against healthy tissues to determine whether a mutation was a \gls{sommut}. Mutations were identified by combining three established pipelines (Sanger \citep{Jones2016CgpCaVEManWrapper:Data}, EMBL/DKFZ \citep{Rimmer2014IntegratingApplications}, and Broad \citep{Cibulskis2013SensitiveSamples}).
 
-This project is limited to somatic \glspl{point_mut}. I sampled 12 cancers whose DHS data for the putative original cells is also available (Table \ref{tab:encode}). A summary of the mutations for the 12 cancers can be found in the appendix Table \ref{tab:mutation_summary} and Figure \ref{fig:mutation_summary}. Mutation data for all individuals and all mutations was downloaded as a MAF file from the \href{https://dcc.icgc.org/releases/PCAWG/consensus_snv_indel}{International Cancer Genome Consortium (ICGC)}. Driver mutations were then filtered out based on \href{https://dcc.icgc.org/releases/PCAWG/driver_mutations}{the PCAWG's driver mutation project} because driver mutations are under selection pressure and have different mutation rates to passenger mutations. The information this project utilised from PCAWG was the mutations, their genomic locations, their donor ID and the donor's cancer. 
+This project was limited to analysing somatic \glspl{point_mut}. I sampled 12 cancers whose DHS data for the putative original cells was also available (Table \ref{tab:encode}). A summary of the mutations for the 12 cancers can be found in the appendix (Table \ref{tab:mutation_summary}, Figure \ref{fig:mutation_summary}). Mutation data for all individuals and all mutations was downloaded as a MAF file from the \href{https://dcc.icgc.org/releases/PCAWG/consensus_snv_indel}{International Cancer Genome Consortium (ICGC)}. Driver mutations were filtered out based on \href{https://dcc.icgc.org/releases/PCAWG/driver_mutations}{the PCAWG's driver mutation project} because driver mutations are under selection pressure and have different mutation rates to passenger mutations. Selection pressure was a confounder as the question of interest concerned the informativeness of the mutagenesis process. The information this project utilised from PCAWG was the mutations, their genomic locations, their donor ID and the donor's cancer. 
 
 \subsection{Reference genome:} 
-To reconstruct the cancer genome, both mutation data and a standard human reference genome are required. The human reference genome was provided by Ensembl \citep{Yates2020Ensembl2020}, and downloaded from the \href{http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes}{UCSC genome browser}. As PCAWG used Human Genome Assembly 37, the same version of genomic coordinates is used for this project. As an additional check, I also assert that the wildtype base at each mutated position and its local reference sequence context provided by PCAWG match the sequence at that position from the reference genome. 
+To reconstruct the cancer genome, both mutation data and a standard human reference genome are required. The human reference genome was downloaded from the \href{http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes}{UCSC genome browser}. As PCAWG used Human Genome Assembly 37, the same version of genomic coordinates was used for this project. As an additional check, I also established that the wildtype base at each mutated position and its local reference sequence context provided by PCAWG matched the sequence at that position from the reference genome. 
 
 \subsection{DHS data for chromatin status:} 
-Part of my project investigates the relationship between mutation distribution and chromatin status. Based on literature search, I identified the most likely tissue of origin for the cancer of interest, summarised in Table \ref{tab:encode}. DNase I hypersensitivity (DHS) data for these tissues of origin, as a canonical measure for chromatin status, was provided by ENCODE \citep[downloaded from either \href{https://genome.ucsc.edu/cgi-bin/hgFileUi?db=hg19&g=wgEncodeOpenChromDnase}{Duke} or \href{https://genome.ucsc.edu/cgi-bin/hgFileUi?db=hg19&g=wgEncodeUwDnase}{UW};][]{Thurman2012TheGenome,Klemm2019ChromatinEpigenome}. Specifically, ENCODE measured the level of Dnase hypersensitivity across the genome and identified Dnase hypersensitive regions based on an established threshold. Here, open chromatin regions are defined as the Dnase hypersensitive range and closed chromatin regions are the rest of the genome. The relationship between the original cells based on DHS can be visualised in Figure \ref{fig:encode_pca} via the multiple dimension scaling technique (details in Subsection \ref{methods:encode_pca}). 
+Part of my project investigated the relationship between mutation distribution and chromatin status. Based on literature search, I identified the most likely tissue of origin for the cancer of interest. These are summarised in Table \ref{tab:encode}. DNase I hypersensitivity (DHS) data for these tissues of origin, as a canonical measure for chromatin status, was from the ENCODE study \citep[downloaded from either \href{https://genome.ucsc.edu/cgi-bin/hgFileUi?db=hg19&g=wgEncodeOpenChromDnase}{Duke} or \href{https://genome.ucsc.edu/cgi-bin/hgFileUi?db=hg19&g=wgEncodeUwDnase}{UW};][]{Thurman2012TheGenome,Klemm2019ChromatinEpigenome}. Specifically, ENCODE measured the level of Dnase hypersensitivity across the genome and identified Dnase hypersensitive regions based on a threshold set by an established algorithm \citep{Boyle2008High-ResolutionGenome}. I used ENCODE identification of Dnase hypersensitive spatial ranges in the genome as open chromatin regions and the rest of the genome as closed chromatin regions.
 
 \section{Algorithm development}
 \subsection{Reproducibility} 
 \href{http://git-scm.com}{Git} was used as a Version Control tool. Accordingly, the entire code history has been recorded and stored on \href{https://github.com}{GitHub}.
 
-The entire project was done in loops, which means that most analyses were repeated on increasing scales. This not only increases the opportunity for code efficiency to be improved but also helps ensure that the algorithms are reproducible. 
+The entire project was done in loops, which means that most analyses were repeated on increasing scales. This not only increased the opportunity for code efficiency to be improved but also helped ensure that the algorithms are reproducible. 
 
-While the project is too large to be shared in a thesis, all code is available upon request. 
+The code projects are available in \\ \url{https://github.com/GavinHuttley/PhuongAnalysis}, \url{https://github.com/GavinHuttley/PhuongData}, \url{https://github.com/GavinHuttley/PhuongLibrary} \\ and \url{https://github.com/GavinHuttley/PhuongR}. \\ All code is available upon request for now, but will be made public soon. 
 
 \subsection{Developing packages}
-Most core functions were written in Python \citep{van1995python}, with visualisation and some analyses written in R \citep{r}. Code was written as packages that can be installed and utilised by anyone with the permission. 
+Most core functions were written in Python v3.8.6 \citep{van1995python}, with visualisation and some analyses written in R v4.1.0 \citep{r}. Python libraries directly involved in data analysis were \texttt{numpy} v1.20.0 \citep{harris2020array}, \texttt{scipy} v1.6.0 \citep{2020SciPy-NMeth}, \texttt{sklearn} v0.24.2 \citep{scikit-learn}, \texttt{cogent3} v2021.5.7a \citep{pycogent3} and \texttt{MutationMotif} v0.3 \citep{Zhu2017}. R libraries directly involved in data analysis were base R, \texttt{pheatmap} v1.0.12 \citep{pheatmap} and packages from the \texttt{tidyverse} collection such as \texttt{ggplot2} \citep{tidyverse}. Code was written as packages that can be installed and utilised by anyone.
 
-All core functions were tested under explicit hypothetical scenarios for correctness before being applied. This process is called unit testing. Each of the analyses requires multiple core functions. For each analysis, core functions are combined in one \href{https://click.palletsprojects.com/en/8.0.x/}{click} command that can be run either in the command line or conventional Python platforms such as Jupyter Notebook. The \href{https://github.com/HuttleyLab/scitrack}{Scitrack} Python package was applied to these commands so that not only code, but inputs and outputs of these commands were tracked as well.
+All core functions were tested under explicit hypothetical scenarios for correctness before being applied. This process is called unit testing. Each of the analyses required multiple core functions. For each analysis, core functions were combined in one commmand line application \texttt{\href{https://click.palletsprojects.com/en/8.0.x/}{click}} that can be run either in a terminal or a Jupyter Notebook. The \href{https://github.com/HuttleyLab/scitrack}{Scitrack} Python package was applied to these commands so all code, and  data inputs and outputs of the commands were tracked and saved as log files.
 
 \subsection{Parallelisation}
-When analysing large data sets, some steps could be considerably time-consuming, particularly the initial data filtering step and the simulation steps. Therefore, for several steps, I have written scripts that optimise code parallelisation based on the original command line. By doing this, for an analysis that executes the same processes multiple times on independent objects, these objects were ``distributed'' into different computer cores instead of being processed sequentially on one single computer. This was supported by the National Computational Infrastructure Australia.
+When analysing large data sets, some steps could be considerably time-consuming, particularly the initial data filtering step and the simulation steps. Therefore, for several steps, I have written scripts for code parallelisation based on the original command line functions. For example, for an analysis that executes the same processes multiple times on independent data objects, the objects were ``distributed'' across different computer cores instead of being processed sequentially on a single computer. Parallelisation was done using OpenMPI \citep{gabriel04:_open_mpi} and \texttt{mpi4py} \citep{Dalcin2011ParallelPython}. This was performed using resources provided by the National Computational Infrastructure Australia.
 
 
 \section{Whole disease analysis of GLE}\label{methods:gle}
 
-The variation in chromatin structures of different cell types is believed to shape where mutations occur in the genome, giving rise to certain patterns of genomic location (\gls{gle}) that are characteristic of cancers. The methods in this section serve two purposes: to formally test the presumed biological connection between chromatin structure and mutation locations, and to weigh the importance of GLE as a characteristic of the mutation profile irrespective of the its driving mechanism.  
+The variation in chromatin structures of different cell types is believed to shape where mutations occur in the genome, giving rise to the genomic location effects (\gls{gle}) that are characteristic of cancers \citep{Polak2015}. The methods in this section serve two purposes: to formally test the presumed biological connection between chromatin structure and mutation locations, and to weigh the importance of GLE as a characteristic of the cancer mutation profile irrespective of the its driving mechanism.  
 
 \subsection{Visualising DHS by multi-dimensional scaling}\label{methods:encode_pca}
-Before establishing the relationship between mutation location and chromatin structure, I examined whether and how the relevant original cells are related in terms of chromatin structure using DHS data. The rationale is that if chromatin structure is a true determinant of mutation location, then tissues that are epigenetically similar should have roughly similar patterns of GLE. Accordingly, this might partly explain the pattern of mis-classification by GLE afterwards.
+Before establishing the relationship between mutation location and chromatin structure, I examined whether and how the relevant original cells are related in terms of chromatin structure using DHS data. The rationale was that if chromatin structure was a true determinant of mutation location, then tissues that were epigenetically similar should have roughly similar patterns of GLE. Furthermore, such similarity might interfere with the informativeness of the GLE as a predictor of cancer when training the classifier.
 
 For each pair of cell types, the intersections of their open chromatin regions were identified. The difference between the pair was then calculated as:
 
@@ -48,7 +48,7 @@ For each pair of cell types, the intersections of their open chromatin regions w
 
 where $d$ is the difference/distance, $i$ is the total lengths of the genomic regions covered by the intersections, $o_1$ and $o_2$ are the length of the open chromatin regions. Essentially $d$ is the ``complement'' of the ratio between the intersection $i$ and the average length of the open regions $o_1$ and $o_2$. 
 
-Once the distances for all possible pairs of cell types were obtained, I decomposed these distances into their relative coordinates by multi-dimensional scaling. This was done by the R function \texttt{cmdscale}. I reported the coordinates for the 3 most informative dimensions. %in the appendix?
+Once the distances for all possible pairs of cell types were obtained, I decomposed these distances into their relative coordinates by multi-dimensional scaling. This was done by the R function \texttt{cmdscale}. The coordinates for the 3 most informative dimensions are reported in Figure \ref{fig:encode_pca}, Subsection \ref{gle:pca} of Chapter \ref{gle}.
 
 \subsection{Mutation location in relation to chromatin status}\label{methods:chromatin}
 To establish the relationship between the mutation location of a cancer and the chromatin status of its original cell type, I sorted mutations into open and closed chromatin regions as per Figure \ref{fig:gle_workflow}. I then used (1) the G-test for whether we could reject the null that mutations occur without any preference for closed or open regions and (2) the odds ratio statistic to measure the bias towards closed regions.
@@ -56,19 +56,19 @@ To establish the relationship between the mutation location of a cancer and the 
 \input{figures/methods_gle_workflow}
 
 \subsubsection{Homogeneity test for mutation location between closed and open regions}
-I used the G-test of independence \citep{McDonald2014GtestStatistics} to examine the hypothesis whether the distribution of mutations are random across the genome - if this is the case, the expected number of mutations in the closed chromatin regions should not differ from that in the open regions. More formally:
+I used the G-test of independence \citep{McDonald2014GtestStatistics} to examine the hypothesis whether the distribution of mutations are random across the genome. More formally:
 
 \begin{itemize}
     \item $H_o (Null)$: Mutation abundance is independent of the chromatin status
     \item $H_a (Alternate)$: Mutation abundance is biased by the chromatin status
 \end{itemize}
 
-First, the expected number of observations for each cell was calculated as per Table \ref{tab:count_exp_demo}. For example, the expected number of mutated bases in the closed regions $e_i$ should be proportional to the number of bases available in the closed regions $c$ the number of mutations $m$. The departure of the observed count $o_i$ from the expected $e_i$ was measured by the $G$ statistic, calculated as:
+First, the expected number of observations for each cell assuming the null was true was calculated as per Table \ref{tab:count_exp_demo}. For example, the expected number of mutated bases in the closed regions $e_i$ is proportional to the number of bases available in the closed regions $c$ and the number of mutations $m$. The departure of the observed count $o_i$ from the expected $e_i$ was measured by the $G$ statistic, calculated as:
 \begin{equation}
     G = 2 \underset{i}{\sum} o_{i} \ln \frac{o_{i}}{e_{i}}
     \label{eq:g}
 \end{equation}
-where $o_{i}$ are observed values (\textit{i.e.} entries from Table \ref{tab:count_obs_demo}) and $e_{i}$ are expected values (\textit{i.e.} entries from Table \ref{tab:count_obs_demo}) and the p-value was obtained by contrasting $G$ against the $\chi^2_1$ distribution.
+where $o_{i}$ are the observed values (\textit{i.e.} entries from Table \ref{tab:count_obs_demo}) and $e_{i}$ are the expected values (\textit{i.e.} entries from Table \ref{tab:count_obs_demo}) and the p-values were obtained by contrasting $G$ against the $\chi^2_1$ distribution. I used Bonferroni method on the p-values for multiple test correction as per equation \ref{eq:bonferroni} in the Appendix \citep{Armstrong2014WhenCorrection}.
 
 \input{tables/methods_count_obs_demo}
 
@@ -83,50 +83,56 @@ To complement the G-test, I used the odds ratio \citep[$OR$;][]{Hoppe2017OddsRat
 where $c_m$, $c_n$, $o_m$ and $o_n$ are all observed values that comes from Table \ref{tab:count_obs_demo}.
 
 \subsubsection{Jackknife for the variation of $OR$}
-It is worth noting that even within one cancer type, different donors might vary in the number of mutations they carry and the locations of the mutations. If a donor has a very distinctive mutation pattern, then it is probable that the $OR$ statistic for their whole cancer cohort mostly represents that donor only. To address this, I performed a jackknife analysis on this measure for each disease \citep{Miller1974TheReview}. An illustration of the jackknife workflow is shown in figure \ref{fig:jackknife_demo}. Specifically, to see how influential a donor is on the $OR$, one simply removes that donor and observes how $OR$ changes. If one applies that to every donor, one obtains a new set of $OR$ that reflects the potential range of the true $OR$.
+It is worth noting that even within one cancer type, different donors might vary in the number of mutations they carry and the locations of the mutations (\textit{e.g.} if they are an outlier). If a donor has a very distinctive mutation pattern, their data might bias the $OR$ statistic for their whole cancer cohort, especially when the cohort is small. To address this, I performed a jackknife analysis on this measure for each disease \citep{Miller1974TheReview}. An illustration of the jackknife workflow is shown in figure \ref{fig:jackknife_demo}. Specifically, to see how influential a donor $i$ is on $OR$, I removed that donor, recomputed $OR_i$ and computed a pseudo-value for $OR$ as per equation \ref{eq:jackknife}. 
+
+\begin{equation}
+    OR^{pseudo}_i = nOR - (n-1)OR_i
+    \label{eq:jackknife}
+\end{equation}
+where $OR^{pseudo}_i$ is the jackknifed pseudo-value for donor $i$, $OR_i$ is the recomputed $OR$ without donor $i$, $n$ is the number of donors.
+
+Applying this to every donor generates a new set of $OR$ that reflects the potential range of the true $OR$. The result for this is shown in Subsection \ref{gle:or}.
 
 \input{figures/methods_jackknife}
 
-\subsubsection{Shuffling DHS data}
-It is a very natural concern that the calculation of $OR$ is itself biased towards closed chromatin regions due to its sheer large size compared to open regions. Besides, if chromatin status is a determinant of mutation location, then cells that have similar DHS should have somewhat similar GLE patterns. To address both of these, I shuffled the DHS data for the examined cancers. This means that, I sampled the PCAWG mutation data for each cancer. I then calculated the shuffled $OR$ - instead of sorting mutations by its own DHS data, I sorted mutations by the DHS data for all other cancers' original cells. Eventually, for each cancer, 11 shuffled $OR$'s were obtained. 
+\subsubsection{Mislabelling DHS data}
+It is a very natural concern that the calculation of $OR$ is itself biased towards closed chromatin regions purely due to its large size compared to open regions. Besides, if chromatin status is a determinant of mutation location, then cells that have similar DHS should have somewhat similar GLE patterns. To address both of these, I considered all possible combinations of DHS data for the original cell types and mutation data for cancers. Next, instead of calculating $OR$ for the matching DHS/mutation data, I calculated all mislabelled $OR$'s. Eventually, for each cancer, 11 mislabelled $OR$'s and one correctly matched $OR$ were obtained. The result for this is presented in Subsection \ref{gle:mixed_or}.
 
 \subsection{Hypothesis testing of GLE between cancer pairs by bootstrap}\label{methods:bootstrap}
 
-Following the attempt to investigate a suspected determinant of GLE, I examined whether GLE could discriminate cancers and what approaches to represent GLE could yield the most resolution. This includes the bin \textit{v.s.} smoothing representation and the Wasserstein \textit{v.s.} Euclidean distance measures. 
+I examined whether GLE could discriminate cancers and what approaches to represent GLE could yield the most resolution. This includes the conventional bin \textit{v.s.} smooth representation and the Wasserstein \textit{v.s.} Euclidean distance measures. 
 
-% add something about smooth vs bin and euclidean vs wasserstein
-
-\subsubsection{Bin \textit{v.s.} smoothing representation}
-\paragraph{Bin} As briefly described in Figure \ref{fig:mutdistribution_demo}, the bin representation segmented the genome into non-overlapping bins of 1 million base in length. The number of mutations in each bin was recorded for each chromosome, then divided by the total mutations in that chromosome to get the bin density. 
-\paragraph{Smoothing} To address the issue with arbitrary boundaries introduced by the discrete bins approach, I proposed the smoothing representation that computes a sliding window of mutation density across each chromosome (Figure \ref{fig:mutdistribution_demo}). This was done using a kernel function \citep[equation \ref{eq:density};][]{Silverman1986DensityAnalysis}. The idea is that the density at a certain location $x$ should be proportional to the distance from $x$ to all other locations $X_i$ where mutations are observed. 
+\subsubsection{Bin \textit{v.s.} smooth representation}
+\paragraph{Bin} As briefly described in Figure \ref{fig:mutdistribution_demo}, the bin representation segmented the genome into non-overlapping bins of 1 million bases in length. The number of mutations in each bin was recorded for each chromosome, then divided by the total mutations in that chromosome to get the bin density. 
+\paragraph{Smooth} To address the issue with arbitrary boundaries introduced by the discrete bins approach, I proposed a smoothing representation that computes a sliding window of mutation density across each chromosome (Figure \ref{fig:mutdistribution_demo}). This was done using a kernel function \citep[equation \ref{eq:density};][]{Silverman1986DensityAnalysis}. The idea is that the density at a certain location $x$ should be proportional to the distance from $x$ to all other locations $X_i$ where mutations are observed. 
 
 \begin{equation}
-    \hat{f} = \frac{1}{nh} \underset{i=1}{\overset{n}{\sum}} K(\frac{x- X_i}{h})
+    \hat{f}(x) = \frac{1}{nh} \underset{i=1}{\overset{n}{\sum}} K\Big(\frac{x- X_i}{h}\Big)
     \label{eq:density}
 \end{equation}
 
-where $\hat{f}$ is the density for the location of interest $x$, $n$ is the total number of mutations, $X_i$'s are all genomic locations where mutations occur, $K$ is the kernel function - here the Gaussian kernel is used (appendix equation \ref{eq:gaussian}), $h$ is the bandwidth and determines the level of smoothing to be done - I used the canonical Scott's rule \citep[appendix equation \ref{eq:bandwidth};][]{Scott1992MultivariateEstimation} to determine the bandwidth. This is done using the python class \texttt{gaussian\_kde} from \texttt{scicy.stats}
+where $\hat{f}$ is the density for location $x$, $n$ is the total number of mutations, $X_i$'s are all genomic locations where mutations occur, $K$ is the kernel function - here the Gaussian kernel was used (appendix equation \ref{eq:gaussian}), $h>0$ is the bandwidth and determines the level of smoothing to be done. Scott's rule \citep[appendix equation \ref{eq:bandwidth};][]{Scott1992MultivariateEstimation} was used to determine the bandwidth. This was done using the python class \texttt{gaussian\_kde} from \texttt{scipy.stats} \citep{2020SciPy-NMeth}.
 
 \subsubsection{Euclidean \textit{v.s.} Wasserstein distance measure}
-I separately used the Euclidean and Wasserstein distances for both representations to compare the GLE from two cancers. The basic difference between two is depicted in Figure \ref{fig:wasserstein_demo}. Intuitively, Euclidean measures the distance between two densities in a point-wise manner and in the vertical direction while Wasserstein uses both the vertical and horizontal directions. 
+I separately used the Euclidean \citep{ONeill2006FrameFields} and Wasserstein \citep{Kolouri2017OptimalApplications} distances for both the bin and the smooth representations to compare the GLE from two cancers. The basic difference between two is depicted in Figure \ref{fig:wasserstein_demo}. In a simple sense, Euclidean measures the distance between two densities in a point-wise manner and in the vertical direction while Wasserstein uses both the vertical and horizontal directions. 
 
-\paragraph{Euclidean} The Euclidean distance, also known as the Pythagorean distance is the most widely used distance. It is strictly the root sum of squares of the difference between each point on one density and its counterpart on the other density \citep[equation \ref{eq:euclid};][]{ONeill2006FrameFields}.
+\paragraph{Euclidean} The Euclidean distance is also known as the Pythagorean distance. It is strictly the root sum of squares of the difference between each point on one density and its counterpart on the other density \citep[equation \ref{eq:euclid};][]{ONeill2006FrameFields}.
 
 \begin{equation}
     d_E(a,b) = \sqrt{\sum_{i=1}^n (a_i - b_i)^2}
     \label{eq:euclid}
 \end{equation}
 
-where $d_E(a,b)$ is the distance between two densities $a$ and $b$; $a_i$ and $b_i$ are the elements of $a$ and $b$, respectively. This was executed by the python function \texttt{scipy.spatial.distance.euclidean}.
+where $d_E(a,b)$ is the distance between two densities $a$ and $b$; $a_i$ and $b_i$ are the $i^{th}$ elements of $a$ and $b$, respectively. This was executed by the python function \\ \texttt{scipy.spatial.distance.euclidean}.
 
-\paragraph{Wasserstein} It is reasonable to view mutation densities as masses of data spatially distributed across a 1-D axis (Figure \ref{fig:wasserstein_demo}). From this viewpoint, Wasserstein is a very appropriate measure of distance between two densities. Intuitively, it measures the minimal amount of work required to move mass from $A$ to $B$. Mathematically, it does so by searching for the minimum distance with respect to all the joint distributions $\gamma(x,y)$ of random variables $(X,Y)$ that have \glspl{marginal} $A$ and $B$\footnote{\textit{N.B.} There are infinite joint distributions $\gamma$}, as follows.
+\paragraph{Wasserstein} It is reasonable to view mutation densities as masses of data spatially distributed across a 1-D axis (Figure \ref{fig:wasserstein_demo}). From this viewpoint, Wasserstein appears a well suited measure of distance between two densities. Intuitively, it measures the minimal amount of work required to move mass from $A$ to $B$. Mathematically, it does so by searching for the minimum distance with respect to all the joint distributions $\gamma(x,y)$ of random variables $(X,Y)$ that have \glspl{marginal} $A$ and $B$, as follows.
 
 \begin{equation}
     d_W(A,B) = \underset{\gamma \in \mathcal{J}(A,B)}{\inf} \int |x-y| d \gamma(x,y) 
     \label{eq:wassertein}
 \end{equation}
 
-where $d_W$ is the Wasserstein distance; $\mathcal{J}$ is the set of all joint distributions $\gamma$. The $\gamma(x,y)$ terms represent the transport plans to move data from $A$ to $B$ and the $|x-y|$ term represents the distance to move from $A$ to $B$ based on that transport plan. The smallest value that takes into account the two terms (selected by the infimum function $\inf$) is the final Wasserstein distance. The assumption the Wasserstein distance imposes that $A$ and $B$ have the same masses was satisfied because by definition, the area under the curve for densities is always 1. This was done using the python function \texttt{scipy.stats.wasserstein\_distance}.
+where $d_W$ is the Wasserstein distance; $\mathcal{J}$ is the set of all joint distributions $\gamma$. (There are infinite joint distributions $\gamma$). The $\gamma(x,y)$ terms represent the transport plans to move data from $A$ to $B$ and the $|x-y|$ term represents the distance to move from $A$ to $B$ based on that transport plan. The smallest value that takes into account the two terms (selected by the infimum function $\inf$) is the final Wasserstein distance. The assumption the Wasserstein distance imposes that $A$ and $B$ have the same masses was satisfied because by definition, the area under the curve for densities is always 1. This was done using the python function \\ \texttt{scipy.stats.wasserstein\_distance}.
 
 \input{figures/methods_wasserstein}
 
@@ -134,6 +140,7 @@ where $d_W$ is the Wasserstein distance; $\mathcal{J}$ is the set of all joint d
 
 Having established the representations and distance measures, the next questions are whether the distance is significantly large enough to conclude that the cancer types have different patterns of GLE, and which representation can extract the most information for doing so. For this, I used the bootstrap method \citep{Singh2010BootstrapMethod}, which is based on random re-sampling. For a pair of cancers A and B, the formal hypotheses are
 
+\newpage
 \begin{itemize}
     \item $H_o (Null)$ GLE for A is the same as B
     \item $H_a (Alternate)$ GLE for A is different from B
@@ -279,47 +286,4 @@ where $d_J(x,y)$ is the entry for $x$ and $y$ to the joint distance matrix $D_J$
 The subsequent training step proceeded as described in subsection \ref{methods:ml_workflow}. Figure \ref{fig:joint} summarises the procedure for training the joint classifier.
 
 \input{figures/methods_joint_classifier}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
