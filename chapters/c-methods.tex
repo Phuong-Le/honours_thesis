@@ -245,7 +245,7 @@ A second approach to reduce the sparsity of large sequence contexts (in this cas
 
 While previous approaches approaches calculated one single type of vector, which outputs a pairwise distance matrix, to train the KNN classifier, this approach computed pairwise distance matrices for all submotif vectors, then amalgamated these matrices by averaging all their elements. The pairwise distance matrix acquired from this procedure was used to train the classifier for submotifs. 
 
-\subsection{Combining GLE with SCE in a joint classifier}
+\subsection{Combining GLE with SCE in a joint classifier}\label{methods:ml_both}
 Because GLE and SCE are separate sources of information, in this section, I attempted to combine the two factors to see if it could further improve the predictive power compared to each factor by itself.
 
 \subsubsection{Kernel normalisation}
