@@ -234,33 +234,33 @@ where $d_{JS}(P,Q)$ is the JSD between the SCE of donors P and Q; M is the avera
 The representations of the vectors to train the KNN classifier based on JSD are described below.
 
 \subsubsection{Comparing 1-mer, 3-mer and 5-mer}
-Due to SCE's nature as composition data, one obvious way to represent SCE is the proportion of mutations. To be precise, the vector that represents SCE for a donor is the count of different mutation types, divided by the total number of mutations. However, it is worth noting that as the k-mer size increases, the number of elements in the SCE vector increases very rapidly, according to equation \ref{eq:sce_counts} (Figure \ref{fig:sce_counts}).
+Due to SCE's nature as composition data, one obvious way to represent SCE is the proportion of mutations. To be precise, the vector that represents SCE for a donor is the count of different mutation types, divided by the total number of mutations. The generation of the count vector is illustrated in Figure \ref{fig:get_sce}. However, it is worth noting that as the k-mer size increases, the number of elements in the SCE vector increases very rapidly, according to equation \ref{eq:sce_counts} (Figure \ref{fig:sce_size}).
 
 \input{figures/methods_sce_counts}
 
 \subsubsection{Strand asymmetric, semi-symmetric and fully-symmetric representations}
-The rapid growth in the number of mutations when incorporating more flanking positions inevitably results in sparse vectors with many 0 values, as some donors only have hundreds of mutations. Accordingly, I investigated whether introducing strand symmetry, at the expense of some information loss, could address this issue. Therefore, this analysis could also reveal a mechanism of mutagenesis in cancer, which is whether mutation strand symmetry exists or not. There are three levels of strand symmetry involved, asymmetry, semi-symmetry and full-symmetry. Specifically, asymmetry is the normal mutation counts described above. For semi-symmetry, as described in Figure \ref{fig:motif_symmetric_demo}, whatever mutations that start with G or T were counted as part of the mutations on their reverse complementary strand. The fully symmetric representation is even more stringent, it restricts the alphabet of the flanking bases to be A and C rather than A, C, T and G. This means that on the flanking base components, T was counted as A and G was counted as C. Table \ref{tab:sce_symmetric} summarises the properties of the three representations.
+The rapid growth in the number of mutations when incorporating more flanking positions inevitably results in sparse vectors with many 0 values, as some donors only have hundreds of mutations. Accordingly, I investigated whether introducing strand symmetry, at the expense of some information loss, could address this issue. Therefore, this analysis could also reveal a mechanism of mutagenesis in cancer, which is whether mutation strand symmetry exists or not. There are three levels of strand symmetry involved, asymmetry, semi-symmetry and full-symmetry. Specifically, asymmetry is the normal mutation counts described above. For semi-symmetry, as described in Figure \ref{fig:motif_symmetric_demo}, whatever mutations that start with G or T were counted as part of the mutations on their reverse complementary strand. This is the representation adopted by the common literature such as \citet{Jiao2020}. The fully symmetric representation is even more stringent, it restricts the alphabet of the flanking bases to be A and C rather than A, C, T and G. This means that on the flanking base components, T was counted as A and G was counted as C. Table \ref{tab:sce_symmetric} summarises the properties of the three representations.
 
 \input{tables/methods_sce_symmetric}
 
 \subsubsection{Dissecting the 5-mer sequence context}
-A second approach to reduce the sparsity of large sequence contexts (in this case 5-mer), without loss of information, is to dissect them into smaller submotifs. Specifically, instead of one count vector that incorporates all flanking positions of 5-mer, I computed multiple submotif vectors that incorporate 1 (2-submotif) or 2 (3-submotif) flanking positions with the mutations. A summary of these representations is presented in table \ref{tab:submotif}
+A second approach to reduce the sparsity of large sequence contexts (in this case 5-mer), without loss of information, is to dissect them into smaller submotifs. Specifically, instead of one count vector that incorporates all substitutions flanking positions of 5-mer, I computed multiple submotif vectors that incorporate 1 (2-submotif) or 2 (3-submotif) flanking positions with the mutations. A summary of these representations is presented in table \ref{tab:submotif}
 
 \input{tables/methods_submotif}
 
-While previous approaches approaches calculated one single type of vector, which outputs a pairwise distance matrix, to train the KNN classifier, this approach computed pairwise distance matrices for all submotif vectors, then amalgamated these matrices by averaging all their elements. The pairwise distance matrix acquired from this procedure was used to train the classifier for submotifs. 
+My previous approaches approaches used one single type of vector to generate a single pairwise distance matrix. The approach in this subsection computed pairwise distance matrices for all submotif vectors, and amalgamated these matrices by averaging all their elements. The resulting pairwise distance matrix was used to train the classifier for submotifs. 
 
 \subsection{Combining GLE with SCE in a joint classifier}\label{methods:ml_both}
-Because GLE and SCE are separate sources of information, in this section, I attempted to combine the two factors to see if it could further improve the predictive power compared to each factor by itself.
+Because GLE and SCE are distinct types of information, in this section, I attempted to combine the two factors to see if it could further improve the predictive power compared to each factor by itself.
 
 \subsubsection{Kernel normalisation}
-GLE and SCE have different units, leading to the need to normalise them. By normalising the data, the joint classifier can simultaneously avoid one factor being dominated by the other purely due to their mismatched numerical scales and assess which factor is the stronger determinant of cancer . For each factor, the normalisation step was done by converting its pairwise distance matrix into a pairwise kernel matrix. It is worth noting that intuitively, the distance matrix measures the difference between data points and kernel matrix measures the similarity between them. I used the Laplacian kernel function for each element of the distance matrix \citep{Wang2016ApplicationFunction}, as follows:
+GLE and SCE have different units, leading to the need to normalise them. By normalising the data, the joint classifier can simultaneously avoid one factor being dominated by the other purely due to their mismatched numerical scales and assess which factor was the stronger predictor of cancer type. For each factor, the normalisation step was done while converting its pairwise distance matrix into a pairwise kernel matrix. It is worth noting that intuitively, the distance matrix measures the difference between data points and kernel matrix measures the similarity between them. I used the Laplacian kernel function for each element of the distance matrix \citep{Wang2016ApplicationFunction}, as follows:
 
 \begin{equation}
     k(x,y) = \exp\bigg( - \frac{d(x,y)}{\sigma}\bigg)
     \label{eq:laplacian}
 \end{equation}
-where $k$ is an entry of the resulting kernel matrix corresponding to the pair of data points (\textit{i.e.} donors) $x$ and $y$; $d(x,y)$ is the distance between $x$ and $y$ in the distance matrix; $\sigma$ is intuitively the scale parameter. I set $\sigma$ the median of the distance matrix, excluding the case where $x$ and $y$ are the same. This ensures that the normalised matrices are numerically on the same scale, meaning that all entries are within the [0,1] range.
+where $k$ is an entry of the resulting kernel matrix corresponding to the pair of data points (\textit{i.e.} donors) $x$ and $y$; $d(x,y)$ is the distance between $x$ and $y$ in the distance matrix; $\sigma$ is intuitively the scale parameter. I set $\sigma$ as the median of the distance matrix, excluding the case where $x$ and $y$ were the same. The division by $\sigma$ ensured that the distances in the normalised matrices were numerically on the same scale.
 
 After the normalisation step, I obtained a normalised pairwise kernel matrix $G$ for GLE and $S$ for SCE.
 
@@ -271,9 +271,7 @@ I trialled different weights on the linear combination of the kernel matrices $G
     J = gG + (1-g)S
     \label{eq:joint}
 \end{equation}
-where $J$ is the joint kernel matrix; $G$ and $S$ are the kernel matrices for GLE and SCE; $g$ is the weight given to $G$, $1-g$ is the weight given to $S$, $g$ and $1-g$ take values 0, 0.1, 0.2,..., 1.
-
-I then converted the joint kernel matrix $J$ into a joint distance matrix $D_J$ using the standard generic approach \citep[more in the appendix equation \ref{eq:k2d_ori};][]{Phillips20112Distance}
+where $J$ is the joint kernel matrix; $G$ and $S$ are the kernel matrices for GLE and SCE; $g$ is the weight given to $G$, $1-g$ is the weight given to $S$, $g$ and $1-g$ take values 0, 0.1, 0.2,..., 1. I then converted the joint kernel matrix $J$ into a joint distance matrix $D_J$ using the standard generic approach \citep[more in the appendix equation \ref{eq:k2d_ori};][]{Phillips20112Distance}
 
 \begin{equation}
     d_J(x,y) = \sqrt{2 - 2k(x,y)}

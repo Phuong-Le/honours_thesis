@@ -1,14 +1,14 @@
 \begin{table}[hp!]
 \centering
-\caption{\textbf{Summary of the properties of the representations that dissect 5-mer into smaller submotifs.} 2-submotif has 4 component vectors; 3-motif has 3 component vectors. \textbf{\#elements} are the number of elements available in each component vector.}
+\caption{\textbf{Summary of the properties of the representations that dissect 5-mer into smaller submotifs.} 2-submotif has 4 component vectors; 3-motif has 3 component vectors. \textbf{\#elements} are the number of elements available in each component vector. sub is the substitution}
 \label{tab:submotif}
 \begin{tabulary}{\textwidth}{ lllllL }
 \toprule
  & \textbf{vector 1} & \textbf{vector 2} & \textbf{vector 3} & \textbf{vector 4} & \textbf{\#elements} \\
 \hline
-2-submotif & (mut, pos-2) & (mut, pos-1) & (mut, pos+1) & (mut, pos+2) & 48 \\
-3-submotif & (mut, pos-2,-1) & (mut, pos-1,+1) & (mut, pos+1,+2) & & 192 \\
-whole-5mer & (mut, all 4 pos) & & & & 3072 \\
+2-submotif & (sub, pos-2) & (sub, pos-1) & (sub, pos+1) & (sub, pos+2) & 48 \\
+3-submotif & (sub, pos-2,-1) & (sub, pos-1,+1) & (sub, pos+1,+2) & & 192 \\
+whole-5mer & (sub, all 4 pos) & & & & 3072 \\
 \bottomrule
 \end{tabulary}
 \end{table}
