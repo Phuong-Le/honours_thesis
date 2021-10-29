@@ -28,7 +28,7 @@
   
   \begin{minipage}[c]{\textwidth}
     \caption{
-      \textbf{Measuring information at position +1 of the C$\rightarrow$T mutation for some cancer A.} For each C$\rightarrow$T mutation, I randomly selected another C. I then counted the number of these bases and sorted them into a contingency table. In the figure, mut implies that the C is mutated into T, and ref implies the randomly selected base. Using the models in \ref{eq:nbr_demo}, I measured the relative entropy as described previously, the total $RE$ of all entries to the contingency table measures the amount of information at position +1. I did the same to all other positions within the 5-mer context and to all other mutations.
+      \textbf{Measuring information at position +1 of the C$\rightarrow$T mutation for Cancer A.} For each C$\rightarrow$T mutation, another C was randomly selected. I then counted the number of bases at flanking position +1 and presented them as a contingency table. In the figure, $\lambda_{base}$ is the indicator variable for the base at position +1, taking values \textbf{A, C, G, T}. $\lambda_{status}$ is the indicator variable for \textbf{mut} and \textbf{ref}; \textbf{mut} implies that the C is mutated into T, and \textbf{ref} implies the randomly selected base. Using the models in \ref{eq:nbr_demo}, I measured the relative entropy as described previously, the total $RE$ of all entries to the contingency table measures the amount of information at position +1. I did the same to all other positions within the 5-mer context and to all other mutations.
     } \label{fig:nbr_demo}
   \end{minipage}
 \end{figure}
