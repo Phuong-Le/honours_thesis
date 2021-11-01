@@ -50,22 +50,22 @@ The release of the \gls{pcawg} project \citep{Campbell2020}, with whole genomic 
     \begin{itemize}
         \item Are mutations significantly biased towards closed or open regions?
         \item Is the bias uniform for all cancers?
-        \item Is the proposed smoothing representation better at extracting information than the conventional bin approach?
+        \item Is the proposed smooth representation better at extracting information than the conventional bin approach?
     \end{itemize}
     \item To understand how sequence context effect (SCE) is characteristic of cancers (Chapter \ref{sce})
     \begin{itemize}
         \item Can the base substitutions without the flanking bases discriminate cancers?
         \item Are base substitutions strand symmetric?
-        \item Are the flanking bases informative? Is there any advantage in studying bases at outer positions such as position -2 and +2?
+        \item Are the flanking bases informative? Is there any advantage in studying bases at outer positions such as positions -2 and +2?
     \end{itemize}
-    \item To train a classifier that accurately predict cancers for individual donors (Chapter \ref{ml})
+    \item To train a classifier that accurately predicts cancers for individual donors (Chapter \ref{ml})
     \begin{itemize}
         \item Do the proposed methods for GLE and SCE outperform those normally used?
-        \item Does the representations used by the best classifier match those identified by whole disease analyses?
+        \item Do the representations used by the best classifier match those identified by whole disease analyses?
         \item Does combining SCE and GLE result in further accuracy improvement than each factor alone.
     \end{itemize}
 \end{enumerate}
 
 \section{Key findings}
 \label{intro:findings}
-Overall, the project shows that both GLE and SCE are important characteristics of a cancer \gls{mut_profile}, manifesting in three aspects. First, Chapter \ref{gle} shows that mutations generally tended to occur in closed chromatin regions, but the degree of bias varied between cancers. This suggests that chromatin structure has an important influence on GLE, but it is not the single determinant of GLE. Regardless of the driving forces, GLE was found to be characteristic of cancers, particularly when the smoothing representation was used. Second, both components of SCE, the base changes and their sequence contexts were characteristic of cancers (Chapter \ref{sce}). Information was more abundant closer to the mutations (3-mer), but the outer bases were also very informative. Additionally, there was more information in \glspl{transition} than in \glspl{transversion} for both base substitutions and their flanking bases in Chapter \ref{ml}, with evidence of strand symmetry. When recruited to train classifiers, smoothing GLE provided a higher predictive power than binning. Regarding SCE, incorporating the immediate neighbours within the 3-mer neighbourhood improved accuracy over the base changes alone. In addition, while information was detected in the outer bases of the 5-mer sequence context, incorporating this information into the classifier was not supported. Finally, even though GLE and SCE were expected to be separate sources of information, SCE was the predominating contributor of the combined classifier. To be exact, there was no improvement in predictive power in the combined classifier compared to the SCE classifier when using the proposed representations.
+Overall, the project shows that both GLE and SCE are important characteristics of a cancer \gls{mut_profile}, manifesting in three aspects. First, Chapter \ref{gle} shows that mutations generally tended to occur in closed chromatin regions, but the degree of bias varied between cancers. This suggests that chromatin structure has an important influence on GLE, but it is not the single determinant of GLE. Regardless of the driving forces, GLE was found to be characteristic of cancers, particularly when the smoothing representation was used. Second, both components of SCE, the base substitutions and their sequence contexts were characteristic of cancers (Chapter \ref{sce}). Information was more abundant closer to the substitutions (3-mer), but the outer bases were also very informative. Additionally, there was more information in \glspl{transition} than in \glspl{transversion} for both base substitutions and their flanking bases in Chapter \ref{ml}, with evidence of strand symmetry. When recruited to train classifiers, smoothing GLE provided a higher predictive power than binning. Regarding SCE, incorporating the immediate neighbours within the 3-mer neighbourhood improved accuracy over the base changes alone. In addition, while information was detected in the outer bases of the 5-mer sequence context, incorporating this information into the classifier was not supported. Finally, even though GLE and SCE were expected to be separate sources of information, SCE was the predominating contributor of the combined classifier. To be exact, there was no improvement in predictive power in the combined classifier compared to the SCE classifier when using the proposed representations.
