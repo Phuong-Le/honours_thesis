@@ -1,8 +1,8 @@
 \begin{figure}[ht!]
     \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{graphics/sce_counts.pdf} \\
-    \vspace{0.5cm}
+    \includegraphics[scale=0.5]{graphics/sce_counts.pdf} \\
+    \vspace{0.9cm}
     \begin{tabulary}{\columnwidth}{cc|cc|cc}
     \toprule
         \multicolumn{2}{c}{\textbf{1-mer}}  & \multicolumn{2}{c}{\textbf{3-mer}} & \multicolumn{2}{c}{\textbf{5-mer}} \\
@@ -23,7 +23,7 @@
     \caption{Generating the count vector for 1-mer, 3-mer and 5-mer}\label{fig:get_sce}
     \end{subfigure} \\
 
-  \vspace{0.5cm}
+  \vspace{1cm}
   \begin{subfigure}{\textwidth}
   \begin{minipage}{0.65\textwidth}
     \includegraphics[width=\textwidth]{graphics/sce_counts_demo.pdf}
@@ -37,7 +37,7 @@
   \end{minipage}
     \caption{Total number of elements for SCE incorporating flanking positions}\label{fig:sce_size}
   \end{subfigure} \\
- 
+  \vspace{0.2cm}
   \caption{
   \textbf{The number of elements increases extremely rapidly with increasing k-mer size.} This is because there are 12 possible mutations, and for each flanking position, there are 4 possible bases. Panel (a) gives an example of how the count vector for SCE is generated for 1-mer, 3-mer and 5-mer for a DNA sequence with 4 mutations. The elements in the count vector were then divided by the total number of mutations to obtain the SCE vector. Panel (b) illustrates how to calculate the number of elements given the $k$-mer size. 
 } \label{fig:sce_counts}
