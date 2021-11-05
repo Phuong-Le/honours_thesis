@@ -70,21 +70,6 @@
 \titleformat{\paragraph}[runin]{\small\itshape\bfseries}{\theparagraph}{1em}{}
 \titlespacing\paragraph{1pt}{0pt}{7pt}
 
-
-% abstract format
-\makeatletter
-\renewenvironment{abstract}{%
-    \if@twocolumn
-      \section*{\abstractname}%
-    \else %% <- here I've removed \small
-      \begin{center}%
-        {\bfseries \huge\abstractname\vspace{\z@}}%  
-      \end{center}%
-      \quotation
-    \fi}
-    {\if@twocolumn\else\endquotation\fi}
-\makeatother
-
 % table of content format
 \usepackage{titletoc}
 %part
@@ -153,10 +138,17 @@
 
 \begin{document}
 
-% \input{decorations/titlepage}
-% \input{decorations/titleback}
-% \input{decorations/prologue}
-% \input{decorations/acknowledgements}
+\input{decorations/titlepage}
+\input{decorations/titleback}
+\input{decorations/prologue}
+\input{decorations/acknowledgements}
+
+\newpage
+\huge
+\begin{center}
+    \vspace*{9cm}
+    \textbf{Main Contents}
+\end{center}
 
 \input{chapters/abstract}
 \newpage
@@ -177,17 +169,19 @@
 \newpage
 
 \part{Results: Whole disease analysis}{
-    % The next two chapters report the results from whole disease analysis of genomic location effect (\gls{gle}) and sequence context effect (\gls{sce}), respectively, for the 12 cancers of interest (Tables \ref{tab:encode}, \ref{tab:mutation_summary} and Figure \ref{fig:mutation_summary}). In particular, this part evaluates \textbf{whether} GLE and SCE are informative about different cancer types, and explores \textbf{in what way} they are informative. This acts as a basis for the development of the \glspl{classifier} in chapter \ref{ml}.
+    The next two chapters report the results from whole disease analysis of genomic location effect (\gls{gle}) and sequence context effect (\gls{sce}), respectively, for the 12 cancers of interest (Tables \ref{tab:encode}, \ref{tab:mutation_summary} and Figure \ref{fig:mutation_summary}). In particular, this part evaluates \textbf{whether} GLE and SCE are informative about different cancer types, and explores \textbf{in what way} they are informative. This acts as a basis for the development of the \glspl{classifier} in chapter \ref{ml}.
     }
 
 \input{chapters/c-gle}
 \input{chapters/c-sce}
 
 \part{Results: Training the classifiers}{
-    % Based on the finding presented in chapter \ref{gle} and \ref{sce}, the following chapter will present the \glspl{classifier} built on \gls{gle} and \gls{sce}. Briefly, this part trials different representations and distance measures to estimate the dissimilarity between each pair of individual donors using the \gls{knn}. The accuracy of each approach, reported as \glspl{confusion matrix} and F1, reveals interesting characteristics of cancer mutation data.
+    Based on the finding presented in chapter \ref{gle} and \ref{sce}, the following chapter will present the \glspl{classifier} built on \gls{gle} and \gls{sce}. Briefly, this part trials different representations and distance measures to estimate the dissimilarity between each pair of individual donors using the \gls{knn}. The accuracy of each approach, reported as \glspl{confusion matrix} and F1, reveals interesting characteristics of cancer mutation data.
     }
 
 \input{chapters/c-ml}
+
+\part{Discussion, Methods and Supplementary Materials}{}
 
 \input{chapters/c-discussion}
 %TC:ignore

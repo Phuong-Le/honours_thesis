@@ -1,7 +1,15 @@
 \newpage
 \thispagestyle{plain}
-\begin{abstract}
+\begin{center}
+\huge
+\textbf{Abstract}
+\end{center}
   \addcontentsline{toc}{chapter}{Abstract}
+  
+\normalsize
+All cancers develop from a normal cell via the process of \gls{carcinogenesis}. This process is characterised and influenced by mutations. Because different cancers develop in different mutagenic environments, the patterns of mutations are unique for every cancer, likely reflecting the mutagenic conditions in their original cells. Understanding the patterns of mutations in cancer is one of the keys to the elucidation of the mechanisms of carcinogenesis and the classification of cancer based on DNA sequencing data. 
 
+In this project, I studied two factors of the patterns of mutations: the location and the composition of mutations in 12 cancers. Each factor was analysed from two perspectives: signal detection on whole disease scale and classification of cancer on individual patient scale. From the whole disease perspective, I confirmed the previously made observations that chromatin structure had an influence on mutation location. However, counter-intuitively, I found that this influence itself was unlikely to be the driver of the difference in mutation locations between cancers. In addition, I observed that the composition of point mutations was markedly different between cancers. This difference was made up by both the base substitutions and their sequence contexts. I also found that \glspl{transition} contained more information than \glspl{transversion} and that reverse-complementary mutations were strand-symmetric. From the individual patient perspective, I developed mutation-based classifiers of cancers using mutation location and composition. My results show that both mutation location and mutation composition were good predictors of cancer. Based on the premise that the accuracy of the classifiers depends on whether data is correctly represented and measured, I identified the preferred approach to represent both factors. Specifically, the preferred representation of mutation location for my project was to estimate the smooth density of mutations across the genome rather than counting mutations in non-overlapping genomic bins. To the best of my knowledge, this is the first project that explicitly examined the smooth representation of mutation genomic locations. The preferred representation for mutation composition was the strand-symmetric 3-mer context. When combining mutation location and composition in a joint classifier, I found that mutation composition was the stronger predictor. 
 
-\end{abstract}
+The statistical analysis and method development in this project was conducted with careful experimental design as well as highly reproducible and thoroughly tested computational tools. This project demonstrated that it was possible to build a classifier of cancer with only mutation data. In the long term, if such a tool can be successfully developed and rigorously evaluated, it could be recruited in the clinical setting along side existing techniques for early diagnosis of cancer.   
+
