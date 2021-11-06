@@ -163,7 +163,7 @@
 \newpage
 
 \pagenumbering{arabic}
-%TC:endignore
+
 \input{chapters/c-intro}
 
 \newpage
@@ -176,18 +176,19 @@
 \input{chapters/c-sce}
 
 \part{Results: Training the classifiers}{
-    Based on the finding presented in chapter \ref{gle} and \ref{sce}, the following chapter will present the \glspl{classifier} built on \gls{gle} and \gls{sce}. Briefly, this part trials different representations and distance measures to estimate the dissimilarity between each pair of individual donors using the \gls{knn}. The accuracy of each approach, reported as \glspl{confusion matrix} and F1, reveals interesting characteristics of cancer mutation data.
+    Based on the findings presented in chapter \ref{gle} and \ref{sce}, the following chapter will present the \glspl{classifier} built on \gls{gle} and \gls{sce}. Briefly, this part trials different representations and distance measures to estimate the dissimilarity between each pair of individual donors using the \gls{knn}. The accuracy of each approach, reported as \glspl{confusion matrix} and $F1$, reveals interesting characteristics of cancer mutation data.
     }
 
 \input{chapters/c-ml}
 
+
 \part{Discussion, Methods and Supplementary Materials}{}
 
 \input{chapters/c-discussion}
-%TC:ignore
 
+%TC:endignore
 \input{chapters/c-methods}
-
+%TC:ignore
 \bibliographystyle{geneticsstyle}
 \bibliography{references,references_extended}
 \addcontentsline{toc}{chapter}{Bibliography}

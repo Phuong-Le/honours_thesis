@@ -1,10 +1,11 @@
 \begin{figure}[ht!]
-  \begin{minipage}[c]{\textwidth}
+  \begin{subfigure}[c]{\textwidth}
     \includegraphics[scale=0.9]{graphics/discussion_gle.pdf}
-  \end{minipage}\hfill
+    \caption{Mutation density of a hypothetical genomic region}
+  \end{subfigure}\hfill
   \vspace{1cm}
   
-  \begin{minipage}[c]{0.48\textwidth}
+  \begin{subfigure}[c]{0.48\textwidth}
   \centering
     \begin{tabulary}{\columnwidth}{rRR}
     \toprule
@@ -14,8 +15,9 @@
         \textbf{open} & $o_{AT}$ & $o_{CG}$  \\
     \bottomrule
     \end{tabulary}
-  \end{minipage}\hfill
-  \begin{minipage}[c]{0.48\textwidth}
+    \caption{AT/CG mutation distribution in 1 cancer}
+  \end{subfigure}\hfill
+  \begin{subfigure}[c]{0.48\textwidth}
     \begin{tabulary}{\columnwidth}{rRR}
     \toprule
         & \textbf{A/T mutated (Cancer A)} &  \textbf{A/T mutated (Cancer B)} \\
@@ -24,12 +26,13 @@
         \textbf{open} & $o_{A}$ & $o_{B}$  \\
     \bottomrule
     \end{tabulary}
-  \end{minipage}
+    \caption{AT mutation distribution across 2 cancers}
+  \end{subfigure}
   \vspace{0.8cm}
   
   \begin{minipage}[c]{\textwidth}
     \caption{
-      \textbf{Proposed explanation for why GLE differ between Cancer A and Cancer B.} Cancer A is under the influence of a mutagen that targets the base C; Cancer B is under the influence of a mutagen that targets the base T. Some regions of the genome are more enriched in C, other are enriched in T. The distribution of bases combines with chromatin structure to influence GLE. This could be evaluated by assessing whether certain substitutions are enriched in closed/open chromatin regions, or whether two cancers differ in how mutations with wildtype A/T are distributed between closed/open chromatin regions, as per the tables underneath the figure - the techniques are similar to those described in Methods \ref{methods:chromatin}.
+      \textbf{Proposed explanation for why GLE differ between Cancer A and Cancer B.} Cancer A is under the influence of a mutagen that targets the base C; Cancer B is under the influence of a mutagen that targets the base T. Panel (a) Some regions of the genome are more enriched in C, others are enriched in T. The distribution of bases combines with chromatin structure to influence GLE. This could be evaluated by assessing (b) whether certain substitutions are enriched in closed/open chromatin regions, or whether (c) two cancers differ in how mutations with wildtype A/T are distributed between closed/open chromatin regions, as per the tables underneath the figure - the techniques are similar to those described in Methods \ref{methods:chromatin}.
     } \label{fig:discussion_gle}
   \end{minipage}
 \end{figure}
