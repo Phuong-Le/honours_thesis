@@ -7,4 +7,4 @@ Any questions or feedback, please contact me at anhphuong.le@anu.edu.au
 
 
 The main document `main.tex`, which is linked to the contents in each chapters in the `chapters` folder. \
-The `code` folder is not directly incorporated in the document, but it was used to generate some of the graphics in the thesis.
+The `codes` folder is not directly incorporated in the document, but it was used to generate some of the graphics in the thesis.
