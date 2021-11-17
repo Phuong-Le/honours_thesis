@@ -71,7 +71,7 @@ where $r_i$ is the deviance residual for entry $i$, $y_i$ is the actual observed
 To aggregate $k$ p-values, we could calculate the Fisher statistic $X$
 
 \begin{equation}
-    X = 2 \sum_{i=1}^k \ln{p_i}
+    X = - 2 \sum_{i=1}^k \ln{p_i}
     \label{eq:fisher}
 \end{equation}
 where $X$ is the Fisher statistic, $p_i$ is the member p-value. If converted from the log scale as seen in equation \ref{eq:fisher} to the normal scale, we could see that this is essentially the square of the product of the p-values. $X$ follows the $\chi^2_{2k}$ distribution, so we can easily obtain an aggregated p-value by contrasting $X$ against $\chi^2_{2k}$.
